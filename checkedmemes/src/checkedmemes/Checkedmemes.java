@@ -31,7 +31,7 @@ Scanner stdin = new Scanner(System.in);
     
     int[][] CheckerBoard;
     
-    int a, b, c;
+    int a, b, c,e;
     int val1, val2, val3;
     char d, val4;
     val1 = 0;
@@ -43,7 +43,7 @@ Scanner stdin = new Scanner(System.in);
     b = 0;
     c = cb[a][b];
     
-    while(b <= 8){
+    while(b <= 8 && a < 8){
         if(b == 8){
             a = ++a;
             b = 0;
@@ -56,7 +56,7 @@ Scanner stdin = new Scanner(System.in);
                 val2 = (cb[a][b] % 100 - val1) / 10; //checking colors
             }
             else{
-                a = 0;
+                //a = 0;
                 b = 0;
                 System.out.println(" ");
             }
@@ -81,7 +81,7 @@ Scanner stdin = new Scanner(System.in);
             d = val4;
             System.out.print(d + " ");
         }
-        
+               
     }
 
 }
