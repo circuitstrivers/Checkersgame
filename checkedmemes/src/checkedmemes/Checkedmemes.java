@@ -79,7 +79,7 @@ Scanner stdin = new Scanner(System.in);
             }
             d = val4;
         }
-        System.out.print(d + " " + "harry likes memes");
+        System.out.print(d + " ");
     }
 
 }
