@@ -78,7 +78,7 @@ Scanner stdin = new Scanner(System.in);
                 val4 = 'R';
             }
             d = val4;
-            System.out.println(d + " ");
+            System.out.print(d + " ");
         }
     }
 
