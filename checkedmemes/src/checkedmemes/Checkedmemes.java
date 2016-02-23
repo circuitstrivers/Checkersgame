@@ -59,7 +59,6 @@ Scanner stdin = new Scanner(System.in);
             else{
                 a = 0;
                 b = 0;
-                System.out.println("\n");
             }
         }
         
