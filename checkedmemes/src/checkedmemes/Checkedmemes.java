@@ -54,12 +54,13 @@ Scanner stdin = new Scanner(System.in);
             if(a < 8){
                 val1 = cb[a][b] % 10; //checking movable spaces
                 val2 = (cb[a][b] % 100 - val1) / 10; //checking colors
-                b = ++b;
             }
             else{
                 a = 0;
                 b = 0;
+                System.out.println(" ");
             }
+            b++;
         }
         
         if(a < 8 && b < 8){
@@ -78,8 +79,9 @@ Scanner stdin = new Scanner(System.in);
                 val4 = 'R';
             }
             d = val4;
+            System.out.print(d + " ");
         }
-        System.out.print(d + " ");
+        
     }
 
 }
