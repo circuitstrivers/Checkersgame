@@ -12,9 +12,9 @@ import java.util.Scanner;
 public class Checkedmemes extends Application{
 
 public void start(Stage primarystage){
-    
+
 }    
-    
+
 public static void main(String[] args) {
 Scanner stdin = new Scanner(System.in);
 
@@ -31,7 +31,7 @@ Scanner stdin = new Scanner(System.in);
     
     int[][] CheckerBoard;
     
-    int a, b, c,e;
+    int a, b, c, e;
     int val1, val2, val3;
     char d, val4;
     val1 = 0;
