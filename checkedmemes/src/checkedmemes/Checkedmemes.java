@@ -49,7 +49,7 @@ Scanner stdin = new Scanner(System.in);
         
     
         while(printboard){
-            if(b == 8){
+            if(b == 9){
                 a = ++a;
                 b = 0;
                 System.out.println();
