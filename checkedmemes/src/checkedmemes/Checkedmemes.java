@@ -46,69 +46,70 @@ Scanner stdin = new Scanner(System.in);
     
     while(runprint){
     
-    while(printboard){
-        if(b == 8){
-            a = ++a;
-            b = 0;
-            System.out.println();
-            }
-        
-        if(a <= 8){
-            if(a < 8){
-                val1 = cb[a][b] % 10; //checking movable spaces
-                val2 = (cb[a][b] % 100 - val1) / 10; //checking colors
-            }
-            else{
-                //a = 0;
+        while(printboard){
+            if(b == 8){
+                a = ++a;
                 b = 0;
-                System.out.println(" ");
-            }
-            b++;
-        }
-        
-        if(a < 8 && b < 8){
-            if(val2 == 0){
-                if(val1 == 0){
-                    val4 = 'X';
+                System.out.println();
                 }
+        
+            if(a <= 8){
+                if(a < 8){
+                    val1 = cb[a][b] % 10; //checking movable spaces
+                    val2 = (cb[a][b] % 100 - val1) / 10; //checking colors
+                    }
                 else{
-                    val4 = '_';
+                    //a = 0;
+                    b = 0;
+                    System.out.println(" ");
+                    }
+                b++;
+                }
+        
+            if(a < 8 && b < 8){
+                if(val2 == 0){
+                    if(val1 == 0){
+                        val4 = 'X';
+                        }
+                    else{
+                        val4 = '_';
+                        }
+                    }
+                if(val2 == 1){
+                    val4 = 'B';
+                    }    
+                if(val2 == 2){
+                    val4 = 'R';
+                    }
+                d = val4;
+                System.out.print(d + " ");
+                }
+        
+            if(b <= 8 && a < 8){
+                printboard = true;
+                }
+            else{
+                printboard = false;
+                a = 0;
+                b = 0;
                 }
             }
-            if(val2 == 1){
-                val4 = 'B';
-            }    
-            if(val2 == 2){
-                val4 = 'R';
-            }
-            d = val4;
-            System.out.print(d + " ");
-        }
-        
-        if(b <= 8 && a < 8){
+    
+        System.out.println("would you like to print again? \n yes(1) \n no(0)");
+        c = stdin.nextInt();
+        if(c == 1){
+            runprint = true;
             printboard = true;
-        }else{
-            printboard = false;
-            a = 0;
-            b = 0;
+            System.out.println("running again");
+            }
+        else{
+            runprint = false;
+            System.out.println("exiting");
+            }
         }
-    }
-    
-    System.out.println("would you like to print again? \n yes(1) \n no(0)");
-    c = stdin.nextInt();
-    if(c == 1){
-        runprint = true;
-        printboard = true;
-        System.out.println("running again");
-    }else{
-        runprint = false;
-        System.out.println("exiting");
-    }
-    
-    }
 
     if(runprint == false){
         System.exit(0);
-    }
+        }
 }
 }
