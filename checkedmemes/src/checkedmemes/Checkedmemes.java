@@ -71,7 +71,7 @@ Scanner stdin = new Scanner(System.in);
                 b++;
                 }
         
-            if(a < 9 && b < 9){
+            if(a < 10 && b < 10){
                 if(val2 == 0 && val3 == 9){
                     if(val1 == 0){
                         val4 = 'X';
