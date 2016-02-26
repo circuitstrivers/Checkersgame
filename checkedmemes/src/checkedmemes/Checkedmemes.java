@@ -1,5 +1,5 @@
 package checkedmemes;
-//Brent isn't a cool kid
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,7 +17,7 @@ public void start(Stage primarystage){
 
 public static void main(String[] args) {
 Scanner stdin = new Scanner(System.in);
-    //brent is gay
+    
     //Creates an array that sets up the spaces that make up the board
     int[][] cb = {{0000000, 1000000, 2000000, 3000000, 4000000, 5000000, 6000000, 7000000, 8000000},
                   {1000000, 9000000, 9200011, 9000000, 9200011, 9000000, 9200011, 9000000, 9200011},
