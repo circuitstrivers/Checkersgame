@@ -31,6 +31,8 @@ Scanner stdin = new Scanner(System.in);
     
     int[][] CheckerBoard;
     
+    boolean printboard = true;
+    boolean runprint = true;
     int a, b, c, e;
     int val1, val2, val3;
     char d, val4;
@@ -41,9 +43,10 @@ Scanner stdin = new Scanner(System.in);
     d = 0;
     a = 0;
     b = 0;
-    c = cb[a][b];
     
-    while(b <= 8 && a < 8){
+    while(runprint){
+    
+    while(printboard){
         if(b == 8){
             a = ++a;
             b = 0;
@@ -81,8 +84,31 @@ Scanner stdin = new Scanner(System.in);
             d = val4;
             System.out.print(d + " ");
         }
-               
+        
+        if(b <= 8 && a < 8){
+            printboard = true;
+        }else{
+            printboard = false;
+            a = 0;
+            b = 0;
+        }
+    }
+    
+    System.out.println("would you like to print again? \n yes(1) \n no(0)");
+    c = stdin.nextInt();
+    if(c == 1){
+        runprint = true;
+        printboard = true;
+        System.out.println("running again");
+    }else{
+        runprint = false;
+        System.out.println("exiting");
+    }
+    
     }
 
+    if(runprint == false){
+        System.exit(0);
+    }
 }
 }
