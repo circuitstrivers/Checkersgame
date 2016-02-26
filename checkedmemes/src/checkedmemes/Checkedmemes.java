@@ -51,10 +51,13 @@ Scanner stdin = new Scanner(System.in);
                 System.out.println();
                 }
         
-            if(a <= 8){
-                if(a < 8){
+            if(a <= 9){
+                if(a < 9){
                     val1 = cb[a][b] % 10; //checking movable spaces
                     val2 = (cb[a][b] % 100 - val1) / 10; //checking colors
+                    if(val1 == 0){
+                        val3 = cb[a][b] / 1000000;
+                    }
                     }
                 else{
                     //a = 0;
@@ -64,9 +67,9 @@ Scanner stdin = new Scanner(System.in);
                 b++;
                 }
         
-            if(a < 8 && b < 8){
+            if(a < 9 && b < 9){
                 if(val2 == 0){
-                    if(val1 == 0){
+                    if(val1 == 0 && val3 == 9){
                         val4 = 'X';
                         }
                     else{
@@ -83,7 +86,7 @@ Scanner stdin = new Scanner(System.in);
                 System.out.print(d + " ");
                 }
         
-            if(b <= 8 && a < 8){
+            if(b <= 9 && a < 9){
                 printboard = true;
                 }
             else{
@@ -92,7 +95,9 @@ Scanner stdin = new Scanner(System.in);
                 b = 0;
                 }
             }
-    
+        
+        
+        
         System.out.println("would you like to print again? \n yes(1) \n no(0)");
         c = stdin.nextInt();
         if(c == 1){
