@@ -31,7 +31,7 @@ Scanner stdin = new Scanner(System.in);
                  };
     
     boolean printboard = true;
-    boolean runprint = true;
+    boolean runprint   = true;
     int a, b, c, e;
     int val1, val2, val3;
     char d, val4;
@@ -39,9 +39,9 @@ Scanner stdin = new Scanner(System.in);
     val2 = 0;
     val3 = 0;
     val4 = 0;
-    d = 0;
-    a = 0;
-    b = 0;
+    d    = 0;
+    a    = 0;
+    b    = 0;
     
     while(runprint){
         
