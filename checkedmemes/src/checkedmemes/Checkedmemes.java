@@ -29,8 +29,6 @@ Scanner stdin = new Scanner(System.in);
                   {9100021, 9000000, 9100021, 9000000, 9100021, 9000000, 9100021, 9000000},
                  };
     
-    int[][] CheckerBoard;
-    
     boolean printboard = true;
     boolean runprint = true;
     int a, b, c, e;
