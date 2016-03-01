@@ -59,9 +59,7 @@ Scanner stdin = new Scanner(System.in);
                 if(a < 9){
                     val1 = cb[a][b] % 10; //checking movable spaces
                     val2 = (cb[a][b] % 100 - val1) / 10; //checking colors
-                    if(val1 == 0){
-                        val3 = cb[a][b] / 1000000;
-                    }
+                    val3 = cb[a][b] / 1000000;
                     }
                 else{
                     //a = 0;
