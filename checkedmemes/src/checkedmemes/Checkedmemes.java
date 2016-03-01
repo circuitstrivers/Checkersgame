@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class Checkedmemes extends Application{
 
 public void start(Stage primarystage){
-
+//Gui
 }    
 
 public static void main(String[] args) {
@@ -42,6 +42,8 @@ Scanner stdin = new Scanner(System.in);
     d    = 0;
     a    = 0;
     b    = 0;
+    int X1, Y1, X2, Y2;
+    double xdistsq, ydistsq, distance;
     
     while(runprint){
         
@@ -80,7 +82,7 @@ Scanner stdin = new Scanner(System.in);
                     }
                 else{
                    val4 = (char)val3;
-                }
+                    }
                 if(val2 == 1){
                     val4 = 'B';
                     }    
@@ -101,9 +103,25 @@ Scanner stdin = new Scanner(System.in);
                 }
             }
         
+        //movement, not jumping
+        System.out.println("Player 1: choose the x and y coordinates of the peice you want to move.");
+        X1       = stdin.nextInt();
+        Y1       = stdin.nextInt();
+        
+        System.out.println("Choose the x and y coordinate of the position to move the peice.");
+        X2       = stdin.nextInt();
+        Y2       = stdin.nextInt();
+        
+        xdistsq  = Math.pow(X2 - X1, 2);
+        ydistsq  = Math.pow(Y2 - Y1, 2);
+        distance = Math.pow(xdistsq - ydistsq, 0.5);
+        
+        while (distance > 1) {
+            System.out.println("The distance is too far.");
+            }
         
         
-        System.out.println("would you like to print again? \n yes(1) \n no(0)");
+        System.out.println("Would you like to print again? \n yes(1) \n no(0)");
         c = stdin.nextInt();
         if(c == 1){
             runprint = true;
@@ -119,5 +137,5 @@ Scanner stdin = new Scanner(System.in);
     if(runprint == false){
         System.exit(0);
         }
-}
+    }
 }
