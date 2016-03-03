@@ -15,6 +15,74 @@ public void start(Stage primarystage){
 //Gui
 }    
 
+public static void printout(int[][] cb){
+    
+    boolean printboard = true;
+    int a, b, c, e;
+    int val1, val2, val3;
+    char d, val4;
+    val1 = 0;
+    val2 = 0;
+    val3 = 0;
+    val4 = 0;
+    d    = 0;
+    a    = 0;
+    b    = 0;
+    
+    while(printboard){
+        if(b == 9){
+            a = ++a;
+            b = 0;
+            System.out.println();
+        }
+        
+        if(a <= 9){
+            if(a < 9){
+                val1 = cb[a][b] % 10; //checking movable spaces
+                val2 = (cb[a][b] % 100 - val1) / 10; //checking colors
+                val3 = cb[a][b] / 1000000;
+                }
+            else{
+                //a = 0;
+                b = 0;
+                System.out.println(" ");
+                }
+            b++;
+            }
+    
+        if(a < 10 && b < 10){
+            if(val2 == 0 && val3 == 9){
+                if(val1 == 0){
+                    val4 = 'X';
+                    }
+                else{
+                    val4 = '_';
+                    }
+                }
+            else{
+                val4 = (char)val3;
+                }
+            if(val2 == 1){
+                val4 = 'B';
+                }    
+            if(val2 == 2){
+                val4 = 'R';
+                }
+            d = val4;
+            System.out.print(d + " ");
+            }
+    
+        if(b <= 9 && a < 9){
+            printboard = true;
+            }
+        else{
+            printboard = false;
+            a = 0;
+            b = 0;
+            }
+    }        
+}
+
 public static void main(String[] args) {
 Scanner stdin = new Scanner(System.in);
     
@@ -30,78 +98,14 @@ Scanner stdin = new Scanner(System.in);
                   {56000000,  9100021,  9000000,  9100021,  9000000,  9100021,  9000000,  9100021,  9000000},
                  };
     
-    boolean printboard = true;
-    boolean runprint   = true;
-    int a, b, c, e;
-    int val1, val2, val3;
-    char d, val4;
-    val1 = 0;
-    val2 = 0;
-    val3 = 0;
-    val4 = 0;
-    d    = 0;
-    a    = 0;
-    b    = 0;
+    boolean runprint;
+    runprint = true;
     int X1, Y1, X2, Y2;
     double xdistsq, ydistsq, distance;
     
     while(runprint){
         
-        System.out.println("Player 1: Make your move");
-        
-    
-        while(printboard){
-            if(b == 9){
-                a = ++a;
-                b = 0;
-                System.out.println();
-                }
-        
-            if(a <= 9){
-                if(a < 9){
-                    val1 = cb[a][b] % 10; //checking movable spaces
-                    val2 = (cb[a][b] % 100 - val1) / 10; //checking colors
-                    val3 = cb[a][b] / 1000000;
-                    }
-                else{
-                    //a = 0;
-                    b = 0;
-                    System.out.println(" ");
-                    }
-                b++;
-                }
-        
-            if(a < 10 && b < 10){
-                if(val2 == 0 && val3 == 9){
-                    if(val1 == 0){
-                        val4 = 'X';
-                        }
-                    else{
-                        val4 = '_';
-                        }
-                    }
-                else{
-                   val4 = (char)val3;
-                    }
-                if(val2 == 1){
-                    val4 = 'B';
-                    }    
-                if(val2 == 2){
-                    val4 = 'R';
-                    }
-                d = val4;
-                System.out.print(d + " ");
-                }
-        
-            if(b <= 9 && a < 9){
-                printboard = true;
-                }
-            else{
-                printboard = false;
-                a = 0;
-                b = 0;
-                }
-            }
+        printout(cb);
         
         //movement, not jumping
         System.out.println("Player 1: choose the x and y coordinates of the peice you want to move.");
@@ -120,18 +124,6 @@ Scanner stdin = new Scanner(System.in);
             System.out.println("The distance is too far.");
             }
         
-        
-        System.out.println("Would you like to print again? \n yes(1) \n no(0)");
-        c = stdin.nextInt();
-        if(c == 1){
-            runprint = true;
-            printboard = true;
-            System.out.println("running again");
-            }
-        else{
-            runprint = false;
-            System.out.println("exiting");
-            }
         }
 
     if(runprint == false){
