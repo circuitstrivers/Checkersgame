@@ -25,8 +25,8 @@ public static boolean checkmovevalid(int[][] cb, int row, int column, int rowcha
         return false;
     }
     //checks if requested piece belongs to player
-    if((((((cb[row][column] % 1000000) - 1) / 10) == 1) && firstplayerturn == false) ||
-       (((((cb[row][column] % 1000000) - 1) / 10) == 2) && firstplayerturn == true )) {
+    if((((((cb[row][column] % 1000000) - 1) / 10) == 2) && firstplayerturn == false) ||
+       (((((cb[row][column] % 1000000) - 1) / 10) == 1) && firstplayerturn == true )) {
         System.out.println("NOT YOUR PIECE");
         return false;
     }
@@ -90,7 +90,14 @@ public static boolean checkmovevalid(int[][] cb, int row, int column, int rowcha
 }
 
 public static int[][] movepiece(int[][] cb, int row, int column, int rowchange, int columnchange){
+    int originalrowchange, originalcolumnchange;
+    originalrowchange = rowchange;
+    originalcolumnchange = columnchange;
     
+    cb[rowchange][columnchange] = cb[row][column];
+    cb[row][column] = cb[originalcolumnchange][originalrowchange];
+    
+    return cb;
 }
 
 public static int[][] startmovingpiece(int[][] cb, boolean firstplayerturn){
