@@ -7,7 +7,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-
 import java.util.Scanner;
 public class Checkedmemes extends Application{
 
@@ -33,29 +32,56 @@ public static boolean checkmovevalid(int[][] cb, int row, int column, int rowcha
     }
     
     //checks piece color and color of any piece that may be directly ahead of piece
-    piececolor              = (((cb[row][column] % 1000000) - 1) / 10);
+    piececolor                = (((cb[row][column]         % 1000000) - 1) / 10);
     if(firstplayerturn){
-        leftsecondpiececolor    = (((cb[row + 1][column - 1] % 1000000) - 1) / 10);
-        rightsecondpiececolor   = (((cb[row + 1][column + 1] % 1000000) - 1) / 10);
+        leftsecondpiececolor  = (((cb[row + 1][column - 1] % 1000000) - 1) / 10);
+        rightsecondpiececolor = (((cb[row + 1][column + 1] % 1000000) - 1) / 10);
     }else{
-        leftsecondpiececolor    = (((cb[row - 1][column - 1] % 1000000) - 1) / 10);
-        rightsecondpiececolor   = (((cb[row - 1][column + 1] % 1000000) - 1) / 10);
+        leftsecondpiececolor  = (((cb[row - 1][column - 1] % 1000000) - 1) / 10);
+        rightsecondpiececolor = (((cb[row - 1][column + 1] % 1000000) - 1) / 10);
     }
     
     //checks if there is a piece ahead that must be jumped
     if(firstplayerturn){
-        if(){
-            
-        }else if(){
-            mustjumpleft = false;
+        if(rightsecondpiececolor == 1){
+            mustjumpright = true;
         }else{
-            
+            mustjumpright = false;
+        }
+        if(leftsecondpiececolor == 1){
+            mustjumpleft  = true;
+        }else{
+            mustjumpleft = false;
         }
     }else{
-        if(){
-            
+        if(rightsecondpiececolor == 2){
+            mustjumpright = true;
         }else{
-            mustjump = false;
+            mustjumpright = false;
+        }
+        if(leftsecondpiececolor == 2){
+            mustjumpleft = true;
+        }else{
+            mustjumpleft = false;
+        }
+    }
+    
+    //checks if player is making a required jump
+    if(firstplayerturn){
+        if(mustjumpright || mustjumpleft){
+            if(!((mustjumpright && (cb[rowchange][columnchange] == cb[row + 2][column + 2])) ||
+                 (mustjumpleft  && (cb[rowchange][columnchange] == cb[row + 2][column - 2])))){
+                System.out.println("must jump piece");
+                return false;
+            }
+        }
+    }else{
+        if(mustjumpright || mustjumpleft){
+            if(!((mustjumpright && (cb[rowchange][columnchange] == cb[row - 2][column + 2])) ||
+                 (mustjumpleft  && (cb[rowchange][columnchange] == cb[row - 2][column - 2])))){
+                System.out.println("must jump piece");
+                return false;
+            }
         }
     }
     
