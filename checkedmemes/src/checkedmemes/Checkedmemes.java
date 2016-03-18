@@ -125,45 +125,44 @@ public static void printout(int[][] cb){
                 val1 = cb[a][b] % 10; //checking movable spaces
                 val2 = (cb[a][b] % 100 - val1) / 10; //checking colors
                 val3 = cb[a][b] / 1000000;
-                }
+            }
             else{
                 //a = 0;
                 b = 0;
                 System.out.println(" ");
-                }
-            b++;
             }
+            b++;
+        }
     
         if(a < 10 && b < 10){
             if(val2 == 0 && val3 == 9){
                 if(val1 == 0){
                     val4 = 'X';
-                    }
+                }
                 else{
                     val4 = '_';
-                    }
                 }
+            }
             else{
                 val4 = (char)val3;
                 }
             if(val2 == 1){
                 val4 = 'B';
-                }    
+            }    
             if(val2 == 2){
                 val4 = 'R';
-                }
+            }
             d = val4;
             System.out.print(d + " ");
-            }
+        }
     
         if(b <= 9 && a < 9){
             printboard = true;
-            }
-        else{
+        }else{
             printboard = false;
             a = 0;
             b = 0;
-            }
+        }
     }        
 }
 
