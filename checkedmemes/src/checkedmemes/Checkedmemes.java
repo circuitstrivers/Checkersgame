@@ -18,23 +18,48 @@ public void start(Stage primarystage){
 }    
 
 public static boolean checkmovevalid(int[][] cb, int row, int column, int rowchange, int columnchange, boolean firstplayerturn){
-    //first checks if requested piece is actually a piece;
+    boolean mustjumpleft, mustjumpright;
+    int piececolor, leftsecondpiececolor, rightsecondpiececolor;
+    
+    //first checks if requested piece is actually a piece
     if(cb[row][column] % 1000000 == 0){
         return false;
     }
-    
+    //checks if requested piece belongs to player
     if((((((cb[row][column] % 1000000) - 1) / 10) == 1) && firstplayerturn == false) ||
        (((((cb[row][column] % 1000000) - 1) / 10) == 2) && firstplayerturn == true )) {
         System.out.println("NOT YOUR PIECE");
         return false;
     }
     
+    //checks piece color and color of any piece that may be directly ahead of piece
+    piececolor              = (((cb[row][column] % 1000000) - 1) / 10);
     if(firstplayerturn){
-        
+        leftsecondpiececolor    = (((cb[row + 1][column - 1] % 1000000) - 1) / 10);
+        rightsecondpiececolor   = (((cb[row + 1][column + 1] % 1000000) - 1) / 10);
     }else{
-        
+        leftsecondpiececolor    = (((cb[row - 1][column - 1] % 1000000) - 1) / 10);
+        rightsecondpiececolor   = (((cb[row - 1][column + 1] % 1000000) - 1) / 10);
     }
     
+    //checks if there is a piece ahead that must be jumped
+    if(firstplayerturn){
+        if(){
+            
+        }else if(){
+            mustjumpleft = false;
+        }else{
+            
+        }
+    }else{
+        if(){
+            
+        }else{
+            mustjump = false;
+        }
+    }
+    
+    //move is valid
     return true;
 }
 
@@ -158,8 +183,6 @@ public static void main(String[] args) {
     boolean rungame, firstplayerturn;
     rungame = true;
     firstplayerturn = true;
-    int X1, Y1, X2, Y2;
-    double xdistsq, ydistsq, distance;
     
     while(rungame){
         
