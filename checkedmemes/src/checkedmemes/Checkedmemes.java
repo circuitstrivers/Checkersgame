@@ -18,10 +18,31 @@ public void start(Stage primarystage){
 }    
 
 public static boolean checkmovevalid(int[][] cb, int row, int column, int rowchange, int columnchange, boolean firstplayerturn){
+    //first checks if requested piece is actually a piece;
+    if(cb[row][column] % 1000000 == 0){
+        return false;
+    }
+    
+    if((((((cb[row][column] % 1000000) - 1) / 10) == 1) && firstplayerturn == false) ||
+       (((((cb[row][column] % 1000000) - 1) / 10) == 2) && firstplayerturn == true )) {
+        System.out.println("NOT YOUR PIECE");
+        return false;
+    }
+    
+    if(firstplayerturn){
+        
+    }else{
+        
+    }
+    
+    return true;
+}
+
+public static int[][] movepiece(int[][] cb, int row, int column, int rowchange, int columnchange){
     
 }
 
-public static int[][] movepiece(int[][] cb, boolean firstplayerturn){
+public static int[][] startmovingpiece(int[][] cb, boolean firstplayerturn){
     int row, column, rowchange, columnchange;
     boolean isvalidmove, movingpiece;
     
@@ -43,6 +64,7 @@ public static int[][] movepiece(int[][] cb, boolean firstplayerturn){
     
         isvalidmove = checkmovevalid(cb, row, column, rowchange, columnchange, firstplayerturn);
         if(isvalidmove){
+            cb = movepiece(cb, row, column, rowchange, columnchange);
             movingpiece = false;
         }else{
             System.out.println("Invalid move try again");
@@ -143,7 +165,7 @@ public static void main(String[] args) {
         
         printout(cb);
         
-        cb = movepiece(cb, firstplayerturn);
+        cb = startmovingpiece(cb, firstplayerturn);
         firstplayerturn = !firstplayerturn;
         
     }
