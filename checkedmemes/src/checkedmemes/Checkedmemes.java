@@ -11,9 +11,46 @@ import javafx.stage.Stage;
 import java.util.Scanner;
 public class Checkedmemes extends Application{
 
+static Scanner stdin = new Scanner(System.in);
+    
 public void start(Stage primarystage){
 //Gui
 }    
+
+public static boolean checkmovevalid(int[][] cb, int row, int column, int rowchange, int columnchange, boolean firstplayerturn){
+    
+}
+
+public static int[][] movepiece(int[][] cb, boolean firstplayerturn){
+    int row, column, rowchange, columnchange;
+    boolean isvalidmove, movingpiece;
+    
+    if(firstplayerturn){
+        System.out.println("Player one make your move");
+    }else{
+        System.out.println("Player two make your move");
+    }
+    movingpiece = true;
+    
+    while(movingpiece){
+        System.out.println("Select row and column of piece you want to move. row first then column.");
+        row = stdin.nextInt();
+        column = stdin.nextInt();
+    
+        System.out.println("Select row and column of space you want to move piece to. row first then column.");
+        rowchange = stdin.nextInt();
+        columnchange = stdin.nextInt();
+    
+        isvalidmove = checkmovevalid(cb, row, column, rowchange, columnchange, firstplayerturn);
+        if(isvalidmove){
+            movingpiece = false;
+        }else{
+            System.out.println("Invalid move try again");
+            movingpiece = true;
+        }
+    }
+    return cb;
+}
 
 public static void printout(int[][] cb){
     
@@ -84,8 +121,6 @@ public static void printout(int[][] cb){
 }
 
 public static void main(String[] args) {
-Scanner stdin = new Scanner(System.in);
-    
     //Creates an array that sets up the spaces that make up the board
     int[][] cb = {{48000000, 49000000, 50000000, 51000000, 52000000, 53000000, 54000000, 55000000, 56000000},
                   {49000000,  9000000,  9200011,  9000000,  9200011,  9000000,  9200011,  9000000,  9200011},
@@ -98,36 +133,23 @@ Scanner stdin = new Scanner(System.in);
                   {56000000,  9100021,  9000000,  9100021,  9000000,  9100021,  9000000,  9100021,  9000000},
                  };
     
-    boolean runprint;
-    runprint = true;
+    boolean rungame, firstplayerturn;
+    rungame = true;
+    firstplayerturn = true;
     int X1, Y1, X2, Y2;
     double xdistsq, ydistsq, distance;
     
-    while(runprint){
+    while(rungame){
         
         printout(cb);
         
-        //movement, not jumping
-        System.out.println("Player 1: choose the x and y coordinates of the peice you want to move.");
-        X1       = stdin.nextInt();
-        Y1       = stdin.nextInt();
+        cb = movepiece(cb, firstplayerturn);
+        firstplayerturn = !firstplayerturn;
         
-        System.out.println("Choose the x and y coordinate of the position to move the peice.");
-        X2       = stdin.nextInt();
-        Y2       = stdin.nextInt();
-        
-        xdistsq  = Math.pow(X2 - X1, 2);
-        ydistsq  = Math.pow(Y2 - Y1, 2);
-        distance = Math.pow(xdistsq - ydistsq, 0.5);
-        
-        while (distance > 1) {
-            System.out.println("The distance is too far.");
-            }
-        
-        }
-
-    if(runprint == false){
-        System.exit(0);
-        }
     }
+
+    if(rungame == false){
+        System.exit(0);
+    }
+}
 }
