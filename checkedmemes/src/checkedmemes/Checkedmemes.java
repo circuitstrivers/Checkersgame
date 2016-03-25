@@ -51,6 +51,11 @@ public static boolean checkmovevalid(int[][] cb, int row, int column, int rowcha
         return false;
     }
     
+    if(cb[rowchange][columnchange] != 9000001){
+        System.out.println("Can't move on a full space");
+        return false;
+    }
+    
     //checks piece color and color of any piece that may be directly ahead of piece
     piececolor                = (((cb[row][column]         % 1000000) - 1) / 10);
     if(firstplayerturn){
