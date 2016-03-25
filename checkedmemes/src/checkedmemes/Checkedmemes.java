@@ -24,11 +24,25 @@ public static boolean checkmovevalid(int[][] cb, int row, int column, int rowcha
     if(cb[row][column] % 1000000 == 0){
         return false;
     }
+    
     //checks if requested piece belongs to player
     if((((((cb[row][column] % 1000000) - 1) / 10) == 2) && firstplayerturn == false) ||
        (((((cb[row][column] % 1000000) - 1) / 10) == 1) && firstplayerturn == true )) {
         System.out.println("NOT YOUR PIECE");
         return false;
+    }
+    
+    //checks to make sure piece isnt moving backwards
+    if(firstplayerturn){
+        if(rowchange >= row){
+            System.out.println("Can't move backwards");
+            return false;
+        }
+    }else{
+        if(rowchange <= row){
+            System.out.println("Can't move backwards");
+            return false;
+        }
     }
     
     //checks piece color and color of any piece that may be directly ahead of piece
