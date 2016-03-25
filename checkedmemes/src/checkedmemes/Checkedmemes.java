@@ -45,6 +45,12 @@ public static boolean checkmovevalid(int[][] cb, int row, int column, int rowcha
         }
     }
     
+    //checks to make sure piece is moving onto valid space
+    if(columnchange == column || Math.abs(columnchange - column) > 1){
+        System.out.println("Can't move there");
+        return false;
+    }
+    
     //checks piece color and color of any piece that may be directly ahead of piece
     piececolor                = (((cb[row][column]         % 1000000) - 1) / 10);
     if(firstplayerturn){
