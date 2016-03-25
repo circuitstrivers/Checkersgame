@@ -90,12 +90,9 @@ public static boolean checkmovevalid(int[][] cb, int row, int column, int rowcha
 }
 
 public static int[][] movepiece(int[][] cb, int row, int column, int rowchange, int columnchange){
-    int originalrowchange, originalcolumnchange;
-    originalrowchange = rowchange;
-    originalcolumnchange = columnchange;
     
     cb[rowchange][columnchange] = cb[row][column];
-    cb[row][column] = cb[originalcolumnchange][originalrowchange];
+    cb[row][column] = 9000001;
     
     return cb;
 }
@@ -222,7 +219,7 @@ public static void main(String[] args) {
         
         cb = startmovingpiece(cb, firstplayerturn);
         firstplayerturn = !firstplayerturn;
-        
+                
     }
 
     if(rungame == false){
