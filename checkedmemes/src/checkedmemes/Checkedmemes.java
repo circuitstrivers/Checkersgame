@@ -202,10 +202,10 @@ public static void printout(int[][] cb){
                 val4 = (char)val3;
                 }
             if(val2 == 1){
-                val4 = 'B';
+                val4 = 'b';
             }    
             if(val2 == 2){
-                val4 = 'R';
+                val4 = 'r';
             }
             d = val4;
             System.out.print(d + " ");
