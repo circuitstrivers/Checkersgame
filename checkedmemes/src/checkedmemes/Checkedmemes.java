@@ -14,6 +14,7 @@ static Scanner stdin = new Scanner(System.in);
     
 public void start(Stage primarystage){
 //Gui
+//This class is a bunch of straight donkey dick garbage. Ledgard can create a difference in pressure on my penis with his mouth
 }    
 
 public static boolean checkmovevalid(int[][] cb, int row, int column, int rowchange, int columnchange, boolean firstplayerturn){
