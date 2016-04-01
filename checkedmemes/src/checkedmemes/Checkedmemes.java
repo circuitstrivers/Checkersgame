@@ -18,6 +18,8 @@ public void start(Stage primarystage){
 
 public static boolean checkmovevalid(int[][] cb, int row, int column, int rowchange, int columnchange, boolean firstplayerturn){
     boolean mustjumpleft, mustjumpright;
+    mustjumpleft = false;
+    mustjumpright = false;
     int piececolor, leftsecondpiececolor, rightsecondpiececolor;
     
     //first checks if requested piece is actually a piece
