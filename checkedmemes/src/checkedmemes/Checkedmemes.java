@@ -81,7 +81,6 @@ private void configureBoardLayout(GridPane board) {
     }
 }
 
-
 public static void main(String[] args) {
     //Creates an array that sets up the spaces that make up the board
     int[][] cb = {{48000000, 49000000, 50000000, 51000000, 52000000, 53000000, 54000000, 55000000, 56000000, 48000000},
@@ -102,15 +101,13 @@ public static void main(String[] args) {
     FirstPlayerTurn = true;
     
     while(RunGame){
-        JumpValue = CheckForPreJump(cb);        
+        JumpValue = CheckForPreJump(cb);
         
         PrintOut(cb);
         
         cb = StartMovingPiece(cb, FirstPlayerTurn, JumpValue);
-        FirstPlayerTurn = !FirstPlayerTurn;
-                
+        FirstPlayerTurn = !FirstPlayerTurn;        
     }
-
     if(RunGame == false){
         System.exit(0);
     }
@@ -121,8 +118,7 @@ public static int[][] CheckForPreJump(int[][] cb){
     for(int x = 1, y = 1, i = 0; x < 9; y++){
         if(y == 9){
             y = 1;
-        }
-        
+        }   
         switch (((cb[x][y] - 1) % 1000000) / 10) {
             case 1:
                 System.out.println("1");
@@ -148,7 +144,6 @@ public static int[][] CheckForPreJump(int[][] cb){
                 System.out.println("0");
                 break;
         }
-        
         if(y == 8){
             x = x + 1;
         }
@@ -165,7 +160,6 @@ public static boolean CheckMoveValid(int[][] cb, int row, int column,
     if(cb[row][column] % 1000000 == 0){
         return false;
     }
-    
     //checks if requested piece belongs to player
     if((((((cb[row][column] % 1000000) - 1) / 10) == 2) 
             && FirstPlayerTurn == false) ||
@@ -202,8 +196,7 @@ public static boolean CheckMoveValid(int[][] cb, int row, int column,
             / 10);
         RightSecondPieceColor = (((cb[row + 1][column + 1] % 1000000) - 1)
             / 10);
-    }
-        
+    }   
     //checks if there is a piece ahead that must be jumped
     MustJumpRight = (RightSecondPieceColor != PieceColor 
         && RightSecondPieceColor != 0);
@@ -215,7 +208,6 @@ public static boolean CheckMoveValid(int[][] cb, int row, int column,
     }else{
         RowDifference =  2;
     }
-    
     if((MustJumpRight == false) && (MustJumpLeft == false)){
         if(ColumnChange == column || Math.abs(ColumnChange - column) > 1){
             System.out.println("Can't move there");
@@ -250,13 +242,11 @@ public static boolean CheckMoveValid(int[][] cb, int row, int column,
             }
         }
     }
-    
     //checks to see if player is trying to move onto full space
     if(cb[RowChange][ColumnChange] != 9000001){
         System.out.println("Can't move on a full space");
         return false;
     }
-
     //move is valid
     return true;
 }
@@ -364,8 +354,7 @@ public static void PrintOut(int[][] cb){
             a = ++a;
             b = 0;
             System.out.println();
-        }
-        
+        }   
         if(a <= 10){
             if(a < 10){
                 val1 =  cb[a][b] % 10; //checking movable spaces
@@ -378,7 +367,6 @@ public static void PrintOut(int[][] cb){
             }
             b++;
         }
-    
         if(a < 11 && b < 11){
             if(val2 == 0 && val3 == 9){
                 if(val1 == 0){
@@ -398,7 +386,6 @@ public static void PrintOut(int[][] cb){
             d = val4;
             System.out.print(d + " ");
         }
-    
         if(b <= 10 && a < 10){
             PrintBoard = true;
         }else{
