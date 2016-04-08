@@ -40,7 +40,8 @@ private void addSquaresToBoard(GridPane board) {
     Color[] squareColors = new Color[] {Color.RED, Color.BLACK};
     for (int row = 0; row < BOARD_SIZE; row++) {
         for (int col = 0; col < BOARD_SIZE; col++) {
-            board.add(new Rectangle(SQUARE_SIZE, SQUARE_SIZE, squareColors[(row + col) % 2]), col, row);
+            board.add(new Rectangle(SQUARE_SIZE, SQUARE_SIZE, 
+                squareColors[(row + col) % 2]), col, row);
         }
     }
 }
@@ -50,11 +51,15 @@ private void addPiecesToBoard(GridPane checkerBoard, Circle[] redPieces,
     for (int i=0; i < NUM_PIECES; i++) {
         redPieces[i] = new Circle(SQUARE_SIZE / 2 - 4, Color.RED);
         redPieces[i].setStroke(Color.BLACK);
-        checkerBoard.add(redPieces[i],   i % (BOARD_SIZE/2) * 2 + (2 * i / BOARD_SIZE) % 2 , BOARD_SIZE - 1 - (i * 2) / BOARD_SIZE);
+        checkerBoard.add(redPieces[i],   i % (BOARD_SIZE/2) * 2 + 
+            (2 * i / BOARD_SIZE) % 2, 
+            BOARD_SIZE - 1 - (i * 2) / BOARD_SIZE);
 
         blackPieces[i] = new Circle(SQUARE_SIZE/2 - 4, Color.BLACK);
         blackPieces[i].setStroke(Color.RED);
-        checkerBoard.add(blackPieces[i], i % (BOARD_SIZE/2) * 2 + (1 + 2 * i / BOARD_SIZE) % 2 , (i * 2) / BOARD_SIZE);
+        checkerBoard.add(blackPieces[i], i % (BOARD_SIZE/2) * 2 + 
+            (1 + 2 * i / BOARD_SIZE) % 2,
+            (i * 2) / BOARD_SIZE);
     }
 }
 
@@ -151,7 +156,8 @@ public static int[][] checkforprejump(int[][] cb){
     return jumpvalue;
 }
 
-public static boolean checkmovevalid(int[][] cb, int row, int column, int rowchange, int columnchange, boolean firstplayerturn){
+public static boolean checkmovevalid(int[][] cb, int row, int column,
+        int rowchange, int columnchange, boolean firstplayerturn){
     boolean mustjumpleft, mustjumpright;
     int piececolor, leftsecondpiececolor, rightsecondpiececolor, rowdif;
     
@@ -161,8 +167,10 @@ public static boolean checkmovevalid(int[][] cb, int row, int column, int rowcha
     }
     
     //checks if requested piece belongs to player
-    if((((((cb[row][column] % 1000000) - 1) / 10) == 2) && firstplayerturn == false) ||
-       (((((cb[row][column] % 1000000) - 1) / 10) == 1) && firstplayerturn == true )) {
+    if((((((cb[row][column] % 1000000) - 1) / 10) == 2) 
+            && firstplayerturn == false) ||
+       (((((cb[row][column] % 1000000) - 1) / 10) == 1) 
+            && firstplayerturn == true )) {
         System.out.println("NOT YOUR PIECE");
         return false;
     }
@@ -180,19 +188,27 @@ public static boolean checkmovevalid(int[][] cb, int row, int column, int rowcha
         }
     }
     
-    //checks piece color and color of any piece that may be directly ahead of piece
-    piececolor                = (((cb[row][column]         % 1000000) - 1) / 10);
+    //checks piece color and color of any piece that may be directly 
+    //ahead of piece
+    piececolor                = (((cb[row][column]         % 1000000) - 1)
+            / 10);
     if(firstplayerturn){
-        leftsecondpiececolor  = (((cb[row - 1][column - 1] % 1000000) - 1) / 10);
-        rightsecondpiececolor = (((cb[row - 1][column + 1] % 1000000) - 1) / 10);
+        leftsecondpiececolor  = (((cb[row - 1][column - 1] % 1000000) - 1)
+            / 10);
+        rightsecondpiececolor = (((cb[row - 1][column + 1] % 1000000) - 1)
+            / 10);
     }else{
-        leftsecondpiececolor  = (((cb[row + 1][column - 1] % 1000000) - 1) / 10);
-        rightsecondpiececolor = (((cb[row + 1][column + 1] % 1000000) - 1) / 10);
+        leftsecondpiececolor  = (((cb[row + 1][column - 1] % 1000000) - 1)
+            / 10);
+        rightsecondpiececolor = (((cb[row + 1][column + 1] % 1000000) - 1)
+            / 10);
     }
         
     //checks if there is a piece ahead that must be jumped
-    mustjumpright = (rightsecondpiececolor != piececolor && rightsecondpiececolor != 0);
-    mustjumpleft  = (leftsecondpiececolor  != piececolor && leftsecondpiececolor  != 0);
+    mustjumpright = (rightsecondpiececolor != piececolor 
+        && rightsecondpiececolor != 0);
+    mustjumpleft  = (leftsecondpiececolor  != piececolor 
+        && leftsecondpiececolor  != 0);
     
     if(firstplayerturn){
         rowdif = -2;
@@ -241,7 +257,8 @@ public static boolean checkmovevalid(int[][] cb, int row, int column, int rowcha
     return true;
 }
 
-public static int[][] movepiece(int[][] cb, int row, int column, int rowchange, int columnchange, boolean firstplayerturn){
+public static int[][] movepiece(int[][] cb, int row, int column, int rowchange,
+        int columnchange, boolean firstplayerturn){
     
     cb[rowchange][columnchange] = cb[row][column];
     cb[row][column] = 9000001;
@@ -263,7 +280,8 @@ public static int[][] movepiece(int[][] cb, int row, int column, int rowchange, 
     return cb;
 }
 
-public static int[][] startmovingpiece(int[][] cb, boolean firstplayerturn, int[][] jumpvalue){
+public static int[][] startmovingpiece(int[][] cb, boolean firstplayerturn,
+        int[][] jumpvalue){
     int row, column, rowchange, columnchange;
     boolean isvalidmove, movingpiece;
     
@@ -276,34 +294,44 @@ public static int[][] startmovingpiece(int[][] cb, boolean firstplayerturn, int[
             System.out.println("Player two make your move");
         }
     }else if(jumpvalue[0][0] == 1 && firstplayerturn){
-        System.out.println("Player one make your move \nYou must make a jump \n"
-                         + "Peice at "  + jumpvalue[0][1] + " " + jumpvalue[0][2]);
+        System.out.println("Player one make your move "
+                + "\nYou must make a jump \n"
+                         + "Peice at "  + jumpvalue[0][1] + " " 
+                + jumpvalue[0][2]);
         if(jumpvalue[1][0] == 1){
-            System.out.println("Or at " + jumpvalue[1][1] + " " + jumpvalue[1][2]);
+            System.out.println("Or at " + jumpvalue[1][1] + " " 
+                + jumpvalue[1][2]);
         }
     }else if(jumpvalue[0][0] == 2 && !firstplayerturn){
-        System.out.println("Player two make your move \nYou must make a jump \n"
-                         + "Peice at "  + jumpvalue[0][1] + " " + jumpvalue[0][2]);
+        System.out.println("Player two make your move "
+                + "\nYou must make a jump \n"
+                         + "Peice at "  + jumpvalue[0][1] + " " 
+                + jumpvalue[0][2]);
         if(jumpvalue[1][0] == 2){
-            System.out.println("Or at " + jumpvalue[1][1] + " " + jumpvalue[1][2]);
+            System.out.println("Or at " + jumpvalue[1][1] + " " 
+                + jumpvalue[1][2]);
         }
     }
     movingpiece = true;
     
     while(movingpiece){
-        System.out.println("Select row and column of piece you want to move. row first then column.");
+        System.out.println("Select row and column of piece you want to move."
+                + " row first then column.");
         row = stdin.nextInt();
         column = stdin.nextInt();
     
-        System.out.println("Select row and column of space you want to move piece to. row first then column.");
+        System.out.println("Select row and column of space you want to move "
+                + "piece to. row first then column.");
         rowchange = stdin.nextInt();
         columnchange = stdin.nextInt();
     
-        isvalidmove = checkmovevalid(cb, row, column, rowchange, columnchange, firstplayerturn);
+        isvalidmove = checkmovevalid(cb, row, column, rowchange, 
+                columnchange, firstplayerturn);
         
         
         if(isvalidmove){
-            cb = movepiece(cb, row, column, rowchange, columnchange, firstplayerturn);
+            cb = movepiece(cb, row, column, rowchange, columnchange,
+                    firstplayerturn);
             movingpiece = false;
         }else{
             System.out.println("Invalid move try again");
