@@ -53,7 +53,7 @@ public static void main(String[] args) {
 }
 
 public static int[][] checkforprejump(int[][] cb){
-    int[][] jumpvalue = {{0,0,0},{0,0,0},{0,0,0}};
+    int[][] jumpvalue = {{0,0,0} , {0,0,0} , {0,0,0}};
     for(int x = 1, y = 1, i = 0; x < 9; y++){
         if(y == 9){
             y = 1;
@@ -86,7 +86,7 @@ public static int[][] checkforprejump(int[][] cb){
         }
         
         if(y == 8){
-            ++x;
+            x = x + 1;
         }
     }
     return jumpvalue;
@@ -158,7 +158,7 @@ public static boolean checkmovevalid(int[][] cb, int row, int column, int rowcha
                 return false;
             }
         }else if(mustjumpright && mustjumpleft){
-            if(!((rowchange == row + rowdif && columnchange == column + 2)||
+            if(!((rowchange == row + rowdif && columnchange == column + 2) ||
                  (rowchange == row + rowdif && columnchange == column - 2))){
                 System.out.println("Must make jump");
                 return false;
