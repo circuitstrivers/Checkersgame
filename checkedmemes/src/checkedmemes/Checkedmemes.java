@@ -223,23 +223,27 @@ public static boolean CheckMoveValid(int[][] cb, int row, int column,
         }
     }else{
         if(MustJumpRight && !MustJumpLeft){
-            if(!(RowChange == row + RowDifference && ColumnChange == column + 2)){
+            if(!(RowChange == row + RowDifference && 
+                    ColumnChange == column + 2)){
                 if(cb[row + RowDifference][column + 2] % 1000000 == 1){
                     System.out.println("Must jump right");
                     return false;
                 }
             }
         }else if(MustJumpLeft && !MustJumpRight){
-            if(!(RowChange == row + RowDifference && ColumnChange == column - 2)){
+            if(!(RowChange == row + RowDifference && 
+                    ColumnChange == column - 2)){
                 if(cb[row + RowDifference][column - 2] % 1000000 == 1){
                     System.out.println("Must jump left");
                     return false;
                 }
             }
         }else if(MustJumpRight && MustJumpLeft){
-            if(!(((RowChange == row + RowDifference && ColumnChange == column + 2) &&
-                   cb[row + RowDifference][column + 2] % 1000000 == 1            ) || 
-                  (RowChange == row + RowDifference && ColumnChange == column - 2) &&
+            if(!(((RowChange    == row + RowDifference && 
+                   ColumnChange == column + 2) &&
+                   cb[row + RowDifference][column + 2] % 1000000 == 1) || 
+                  (RowChange    == row + RowDifference && 
+                   ColumnChange == column - 2) &&
                    cb[row + RowDifference][column - 2] % 1000000 == 1)){
                 System.out.println("Must make jump");
                 return false;
