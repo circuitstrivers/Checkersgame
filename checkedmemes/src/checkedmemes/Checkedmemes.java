@@ -209,17 +209,23 @@ public static boolean checkmovevalid(int[][] cb, int row, int column, int rowcha
     }else{
         if(mustjumpright && !mustjumpleft){
             if(!(rowchange == row + rowdif && columnchange == column + 2)){
-                System.out.println("Must jump right");
-                return false;
+                if(cb[row + rowdif][column + 2] % 1000000 == 1){
+                    System.out.println("Must jump right");
+                    return false;
+                }
             }
         }else if(mustjumpleft && !mustjumpright){
             if(!(rowchange == row + rowdif && columnchange == column - 2)){
-                System.out.println("Must jump left");
-                return false;
+                if(cb[row + rowdif][column - 2] % 1000000 == 1){
+                    System.out.println("Must jump left");
+                    return false;
+                }
             }
         }else if(mustjumpright && mustjumpleft){
-            if(!((rowchange == row + rowdif && columnchange == column + 2) ||
-                 (rowchange == row + rowdif && columnchange == column - 2))){
+            if(!(((rowchange == row + rowdif && columnchange == column + 2) &&
+                   cb[row + rowdif][column + 2] % 1000000 == 1            ) || 
+                  (rowchange == row + rowdif && columnchange == column - 2) &&
+                   cb[row + rowdif][column - 2] % 1000000 == 1)){
                 System.out.println("Must make jump");
                 return false;
             }
