@@ -297,7 +297,7 @@ public static int[][] StartMovingPiece(int[][] cb, boolean FirstPlayerTurn,
     boolean IsValidMove, MovingPiece;
     
 
-    if(firstplayerturn){
+    if(FirstPlayerTurn){
         System.out.println("Player one make your move");
     }else{
         System.out.println("Player two make your move");
