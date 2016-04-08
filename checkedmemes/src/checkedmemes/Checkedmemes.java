@@ -52,7 +52,7 @@ private void addPiecesToBoard(GridPane checkerBoard, Circle[] redPieces,
         redPieces[i].setStroke(Color.BLACK);
         checkerBoard.add(redPieces[i],   i % (BOARD_SIZE/2) * 2 + (2 * i / BOARD_SIZE) % 2 , BOARD_SIZE - 1 - (i * 2) / BOARD_SIZE);
 
-        blackPieces[i] = new Circle(SQUARE_SIZE/2 -4, Color.BLACK);
+        blackPieces[i] = new Circle(SQUARE_SIZE/2 - 4, Color.BLACK);
         blackPieces[i].setStroke(Color.RED);
         checkerBoard.add(blackPieces[i], i % (BOARD_SIZE/2) * 2 + (1 + 2 * i / BOARD_SIZE) % 2 , (i * 2) / BOARD_SIZE);
     }
@@ -61,16 +61,16 @@ private void addPiecesToBoard(GridPane checkerBoard, Circle[] redPieces,
 private void configureBoardLayout(GridPane board) {
     for (int i=0; i<BOARD_SIZE; i++) {
         RowConstraints rowConstraints = new RowConstraints();
-        rowConstraints.setMinHeight(SQUARE_SIZE);
+        rowConstraints.setMinHeight (SQUARE_SIZE);
         rowConstraints.setPrefHeight(SQUARE_SIZE);
-        rowConstraints.setMaxHeight(SQUARE_SIZE);
+        rowConstraints.setMaxHeight (SQUARE_SIZE);
         rowConstraints.setValignment(VPos.CENTER);
         board.getRowConstraints().add(rowConstraints);
 
         ColumnConstraints colConstraints = new ColumnConstraints();
-        colConstraints.setMinWidth(SQUARE_SIZE);
-        colConstraints.setMaxWidth(SQUARE_SIZE);
-        colConstraints.setPrefWidth(SQUARE_SIZE);
+        colConstraints.setMinWidth  (SQUARE_SIZE);
+        colConstraints.setMaxWidth  (SQUARE_SIZE);
+        colConstraints.setPrefWidth (SQUARE_SIZE);
         colConstraints.setHalignment(HPos.CENTER);
         board.getColumnConstraints().add(colConstraints);
     }
@@ -88,8 +88,7 @@ public static void main(String[] args) {
                   {54000000,  9000021,  9000000,  9000021,  9000000,  9000021,  9000000,  9000021,  9000000, 51000000},
                   {55000000,  9000000,  9000021,  9000000,  9000021,  9000000,  9000021,  9000000,  9000021, 50000000},
                   {56000000,  9100021,  9000000,  9100021,  9000000,  9100021,  9000000,  9100021,  9000000, 49000000},
-                  {48000000, 49000000, 50000000, 51000000, 52000000, 53000000, 54000000, 55000000, 56000000, 48000000}
-                 };
+                  {48000000, 49000000, 50000000, 51000000, 52000000, 53000000, 54000000, 55000000, 56000000, 48000000}};
     
     int[][] jumpvalue;
     
@@ -182,7 +181,7 @@ public static boolean checkmovevalid(int[][] cb, int row, int column, int rowcha
     }
     
     //checks piece color and color of any piece that may be directly ahead of piece
-    piececolor                = (((cb[row][column] % 1000000) - 1) / 10);
+    piececolor                = (((cb[row][column]         % 1000000) - 1) / 10);
     if(firstplayerturn){
         leftsecondpiececolor  = (((cb[row - 1][column - 1] % 1000000) - 1) / 10);
         rightsecondpiececolor = (((cb[row - 1][column + 1] % 1000000) - 1) / 10);
@@ -198,7 +197,7 @@ public static boolean checkmovevalid(int[][] cb, int row, int column, int rowcha
     if(firstplayerturn){
         rowdif = -2;
     }else{
-        rowdif = 2;
+        rowdif =  2;
     }
     
     if((mustjumpright == false) && (mustjumpleft == false)){
@@ -337,7 +336,7 @@ public static void printout(int[][] cb){
         
         if(a <= 10){
             if(a < 10){
-                val1 = cb[a][b] % 10; //checking movable spaces
+                val1 =  cb[a][b] % 10; //checking movable spaces
                 val2 = (cb[a][b] % 100 - val1) / 10; //checking colors
                 val3 = cb[a][b] / 1000000;
             }else{
