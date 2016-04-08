@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import java.util.Scanner;
+
 public class Checkedmemes extends Application{
 
 static Scanner stdin = new Scanner(System.in);
@@ -30,15 +31,18 @@ public static void main(String[] args) {
                   {48000000, 49000000, 50000000, 51000000, 52000000, 53000000, 54000000, 55000000, 56000000, 48000000}
                  };
     
+    int[][] jumpvalue;
+    
     boolean rungame, firstplayerturn;
     rungame = true;
     firstplayerturn = true;
     
     while(rungame){
+        jumpvalue = checkforprejump(cb);        
         
         printout(cb);
         
-        cb = startmovingpiece(cb, firstplayerturn);
+        cb = startmovingpiece(cb, firstplayerturn, jumpvalue);
         firstplayerturn = !firstplayerturn;
                 
     }
@@ -46,6 +50,46 @@ public static void main(String[] args) {
     if(rungame == false){
         System.exit(0);
     }
+}
+
+public static int[][] checkforprejump(int[][] cb){
+    int[][] jumpvalue = {{0,0,0},{0,0,0},{0,0,0}};
+    for(int x = 1, y = 1, i = 0; x < 9; y++){
+        if(y == 9){
+            y = 1;
+        }
+        
+        switch (((cb[x][y] - 1) % 1000000) / 10) {
+            case 1:
+                System.out.println("1");
+                if((cb[x - 1][y - 1] % 1000000) - 1 / 10 == 2 ||
+                   (cb[x - 1][y + 1] % 1000000) - 1 / 10 == 2){
+                    jumpvalue[i][0] = 1;
+                    jumpvalue[i][1] = x;
+                    jumpvalue[i][2] = y;
+                    i++;
+                }
+                break;
+            case 2:
+                System.out.println("2");
+                if((cb[x + 1][y - 1] % 1000000) - 1 / 10 == 1 ||
+                   (cb[x + 1][y + 1] % 1000000) - 1 / 10 == 1){
+                    jumpvalue[i][0] = 2;
+                    jumpvalue[i][1] = x;
+                    jumpvalue[i][2] = y;
+                    i++;
+                }
+                break;
+            default:
+                System.out.println("0");
+                break;
+        }
+        
+        if(y == 8){
+            ++x;
+        }
+    }
+    return jumpvalue;
 }
 
 public static boolean checkmovevalid(int[][] cb, int row, int column, int rowchange, int columnchange, boolean firstplayerturn){
@@ -103,7 +147,6 @@ public static boolean checkmovevalid(int[][] cb, int row, int column, int rowcha
             return false;
         }
     }else{
-        System.out.println("goal");
         if(mustjumpright && !mustjumpleft){
             if(!(rowchange == row + rowdif && columnchange == column + 2)){
                 System.out.println("Must jump right");
@@ -155,14 +198,30 @@ public static int[][] movepiece(int[][] cb, int row, int column, int rowchange, 
     return cb;
 }
 
-public static int[][] startmovingpiece(int[][] cb, boolean firstplayerturn){
+public static int[][] startmovingpiece(int[][] cb, boolean firstplayerturn, int[][] jumpvalue){
     int row, column, rowchange, columnchange;
     boolean isvalidmove, movingpiece;
     
-    if(firstplayerturn){
-        System.out.println("Player one make your move");
-    }else{
-        System.out.println("Player two make your move");
+    if(jumpvalue[0][0] == 0 ||
+      (jumpvalue[0][0] == 1 && !firstplayerturn) ||
+      (jumpvalue[0][0] == 2 && firstplayerturn )){
+        if(firstplayerturn){
+            System.out.println("Player one make your move");
+        }else{
+            System.out.println("Player two make your move");
+        }
+    }else if(jumpvalue[0][0] == 1 && firstplayerturn){
+        System.out.println("Player one make your move \nYou must make a jump \n"
+                         + "Peice at " + jumpvalue[0][1] +" "+ jumpvalue[0][2]);
+        if(jumpvalue[1][0] == 1){
+            System.out.println("Or at "+ jumpvalue[1][1] +" "+ jumpvalue[1][2]);
+        }
+    }else if(jumpvalue[0][0] == 2 && !firstplayerturn){
+        System.out.println("Player two make your move \nYou must make a jump \n"
+                         + "Peice at " + jumpvalue[0][1] +" "+ jumpvalue[0][2]);
+        if(jumpvalue[1][0] == 2){
+            System.out.println("Or at "+ jumpvalue[1][1] +" "+ jumpvalue[1][2]);
+        }
     }
     movingpiece = true;
     
@@ -237,10 +296,10 @@ public static void printout(int[][] cb){
                 val4 = (char)val3;
                 }
             if(val2 == 1){
-                val4 = 'b';
+                val4 = 'r';
             }    
             if(val2 == 2){
-                val4 = 'r';
+                val4 = 'b';
             }
             d = val4;
             System.out.print(d + " ");
