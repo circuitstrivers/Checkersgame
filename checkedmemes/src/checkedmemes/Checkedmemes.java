@@ -193,7 +193,7 @@ public static boolean checkmovevalid(int[][] cb, int row, int column, int rowcha
         
     //checks if there is a piece ahead that must be jumped
     mustjumpright = (rightsecondpiececolor != piececolor && rightsecondpiececolor != 0);
-    mustjumpleft  = (leftsecondpiececolor != piececolor && leftsecondpiececolor != 0);
+    mustjumpleft  = (leftsecondpiececolor  != piececolor && leftsecondpiececolor  != 0);
     
     if(firstplayerturn){
         rowdif = -2;
@@ -272,15 +272,15 @@ public static int[][] startmovingpiece(int[][] cb, boolean firstplayerturn, int[
         }
     }else if(jumpvalue[0][0] == 1 && firstplayerturn){
         System.out.println("Player one make your move \nYou must make a jump \n"
-                         + "Peice at " + jumpvalue[0][1] +" "+ jumpvalue[0][2]);
+                         + "Peice at "  + jumpvalue[0][1] + " " + jumpvalue[0][2]);
         if(jumpvalue[1][0] == 1){
-            System.out.println("Or at "+ jumpvalue[1][1] +" "+ jumpvalue[1][2]);
+            System.out.println("Or at " + jumpvalue[1][1] + " " + jumpvalue[1][2]);
         }
     }else if(jumpvalue[0][0] == 2 && !firstplayerturn){
         System.out.println("Player two make your move \nYou must make a jump \n"
-                         + "Peice at " + jumpvalue[0][1] +" "+ jumpvalue[0][2]);
+                         + "Peice at "  + jumpvalue[0][1] + " " + jumpvalue[0][2]);
         if(jumpvalue[1][0] == 2){
-            System.out.println("Or at "+ jumpvalue[1][1] +" "+ jumpvalue[1][2]);
+            System.out.println("Or at " + jumpvalue[1][1] + " " + jumpvalue[1][2]);
         }
     }
     movingpiece = true;
@@ -334,8 +334,7 @@ public static void printout(int[][] cb){
                 val1 = cb[a][b] % 10; //checking movable spaces
                 val2 = (cb[a][b] % 100 - val1) / 10; //checking colors
                 val3 = cb[a][b] / 1000000;
-            }
-            else{
+            }else{
                 //a = 0;
                 b = 0;
                 System.out.println(" ");
@@ -347,12 +346,10 @@ public static void printout(int[][] cb){
             if(val2 == 0 && val3 == 9){
                 if(val1 == 0){
                     val4 = 'X';
-                }
-                else{
+                }else{
                     val4 = '_';
                 }
-            }
-            else{
+            }else{
                 val4 = (char)val3;
                 }
             if(val2 == 1){
