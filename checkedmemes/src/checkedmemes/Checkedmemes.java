@@ -36,45 +36,45 @@ public void start(Stage primaryStage){
     primaryStage.setScene(new Scene(root, 400, 400));
     primaryStage.show();
 }    
-    private void addSquaresToBoard(GridPane board) {
-        Color[] squareColors = new Color[] {Color.RED, Color.BLACK};
-        for (int row = 0; row < BOARD_SIZE; row++) {
-            for (int col = 0; col < BOARD_SIZE; col++) {
-                board.add(new Rectangle(SQUARE_SIZE, SQUARE_SIZE, squareColors[(row+col)%2]), col, row);
-            }
+private void addSquaresToBoard(GridPane board) {
+    Color[] squareColors = new Color[] {Color.RED, Color.BLACK};
+    for (int row = 0; row < BOARD_SIZE; row++) {
+        for (int col = 0; col < BOARD_SIZE; col++) {
+            board.add(new Rectangle(SQUARE_SIZE, SQUARE_SIZE, squareColors[(row+col)%2]), col, row);
         }
     }
+}
     
-    private void addPiecesToBoard(GridPane checkerBoard, Circle[] redPieces,
-            Circle[] blackPieces) {
-        for (int i=0; i<NUM_PIECES; i++) {
-            redPieces[i] = new Circle(SQUARE_SIZE/2-4, Color.RED);
-            redPieces[i].setStroke(Color.BLACK);
-            checkerBoard.add(redPieces[i], i%(BOARD_SIZE/2) * 2 + (2*i/BOARD_SIZE)%2, BOARD_SIZE - 1 - (i*2)/BOARD_SIZE);
+private void addPiecesToBoard(GridPane checkerBoard, Circle[] redPieces,
+        Circle[] blackPieces) {
+    for (int i=0; i<NUM_PIECES; i++) {
+        redPieces[i] = new Circle(SQUARE_SIZE/2-4, Color.RED);
+        redPieces[i].setStroke(Color.BLACK);
+        checkerBoard.add(redPieces[i], i%(BOARD_SIZE/2) * 2 + (2*i/BOARD_SIZE)%2, BOARD_SIZE - 1 - (i*2)/BOARD_SIZE);
 
-            blackPieces[i] = new Circle(SQUARE_SIZE/2 -4, Color.BLACK);
-            blackPieces[i].setStroke(Color.RED);
-            checkerBoard.add(blackPieces[i], i%(BOARD_SIZE/2) * 2 + (1 + 2*i/BOARD_SIZE)%2, (i*2)/BOARD_SIZE);
-        }
+        blackPieces[i] = new Circle(SQUARE_SIZE/2 -4, Color.BLACK);
+        blackPieces[i].setStroke(Color.RED);
+        checkerBoard.add(blackPieces[i], i%(BOARD_SIZE/2) * 2 + (1 + 2*i/BOARD_SIZE)%2, (i*2)/BOARD_SIZE);
     }
+}
 
-    private void configureBoardLayout(GridPane board) {
-        for (int i=0; i<BOARD_SIZE; i++) {
-            RowConstraints rowConstraints = new RowConstraints();
-            rowConstraints.setMinHeight(SQUARE_SIZE);
-            rowConstraints.setPrefHeight(SQUARE_SIZE);
-            rowConstraints.setMaxHeight(SQUARE_SIZE);
-            rowConstraints.setValignment(VPos.CENTER);
-            board.getRowConstraints().add(rowConstraints);
+private void configureBoardLayout(GridPane board) {
+    for (int i=0; i<BOARD_SIZE; i++) {
+        RowConstraints rowConstraints = new RowConstraints();
+        rowConstraints.setMinHeight(SQUARE_SIZE);
+        rowConstraints.setPrefHeight(SQUARE_SIZE);
+        rowConstraints.setMaxHeight(SQUARE_SIZE);
+        rowConstraints.setValignment(VPos.CENTER);
+        board.getRowConstraints().add(rowConstraints);
 
-            ColumnConstraints colConstraints = new ColumnConstraints();
-            colConstraints.setMinWidth(SQUARE_SIZE);
-            colConstraints.setMaxWidth(SQUARE_SIZE);
-            colConstraints.setPrefWidth(SQUARE_SIZE);
-            colConstraints.setHalignment(HPos.CENTER);
-            board.getColumnConstraints().add(colConstraints);
-        }
+        ColumnConstraints colConstraints = new ColumnConstraints();
+        colConstraints.setMinWidth(SQUARE_SIZE);
+        colConstraints.setMaxWidth(SQUARE_SIZE);
+        colConstraints.setPrefWidth(SQUARE_SIZE);
+        colConstraints.setHalignment(HPos.CENTER);
+        board.getColumnConstraints().add(colConstraints);
     }
+}
 
 
 public static void main(String[] args) {
