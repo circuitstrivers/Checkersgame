@@ -18,9 +18,9 @@ import javafx.scene.shape.*;
 public class Checkedmemes extends Application {
 
 static Scanner stdin = new Scanner(System.in);
-    private static final int BOARD_SIZE = 8 ;
-    private static final int SQUARE_SIZE= 50 ;
-    private static final int NUM_PIECES = 12 ;
+    private static final int BOARD_SIZE  =  8 ;
+    private static final int SQUARE_SIZE = 50 ;
+    private static final int NUM_PIECES  = 12 ;
 
     @Override
 public void start(Stage primaryStage){
@@ -40,21 +40,21 @@ private void addSquaresToBoard(GridPane board) {
     Color[] squareColors = new Color[] {Color.RED, Color.BLACK};
     for (int row = 0; row < BOARD_SIZE; row++) {
         for (int col = 0; col < BOARD_SIZE; col++) {
-            board.add(new Rectangle(SQUARE_SIZE, SQUARE_SIZE, squareColors[(row+col)%2]), col, row);
+            board.add(new Rectangle(SQUARE_SIZE, SQUARE_SIZE, squareColors[(row + col) % 2]), col, row);
         }
     }
 }
     
 private void addPiecesToBoard(GridPane checkerBoard, Circle[] redPieces,
         Circle[] blackPieces) {
-    for (int i=0; i<NUM_PIECES; i++) {
-        redPieces[i] = new Circle(SQUARE_SIZE/2-4, Color.RED);
+    for (int i=0; i < NUM_PIECES; i++) {
+        redPieces[i] = new Circle(SQUARE_SIZE / 2 - 4, Color.RED);
         redPieces[i].setStroke(Color.BLACK);
-        checkerBoard.add(redPieces[i], i%(BOARD_SIZE/2) * 2 + (2*i/BOARD_SIZE)%2, BOARD_SIZE - 1 - (i*2)/BOARD_SIZE);
+        checkerBoard.add(redPieces[i],   i % (BOARD_SIZE/2) * 2 + (2 * i / BOARD_SIZE) % 2 , BOARD_SIZE - 1 - (i * 2) / BOARD_SIZE);
 
         blackPieces[i] = new Circle(SQUARE_SIZE/2 -4, Color.BLACK);
         blackPieces[i].setStroke(Color.RED);
-        checkerBoard.add(blackPieces[i], i%(BOARD_SIZE/2) * 2 + (1 + 2*i/BOARD_SIZE)%2, (i*2)/BOARD_SIZE);
+        checkerBoard.add(blackPieces[i], i % (BOARD_SIZE/2) * 2 + (1 + 2 * i / BOARD_SIZE) % 2 , (i * 2) / BOARD_SIZE);
     }
 }
 
