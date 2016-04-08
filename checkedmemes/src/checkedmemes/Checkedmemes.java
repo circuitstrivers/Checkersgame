@@ -95,29 +95,29 @@ public static void main(String[] args) {
                   {56000000,  9100021,  9000000,  9100021,  9000000,  9100021,  9000000,  9100021,  9000000, 49000000},
                   {48000000, 49000000, 50000000, 51000000, 52000000, 53000000, 54000000, 55000000, 56000000, 48000000}};
     
-    int[][] jumpvalue;
+    int[][] JumpValue;
     
-    boolean rungame, firstplayerturn;
-    rungame = true;
-    firstplayerturn = true;
+    boolean RunGame, FirstPlayerTurn;
+    RunGame = true;
+    FirstPlayerTurn = true;
     
-    while(rungame){
-        jumpvalue = checkforprejump(cb);        
+    while(RunGame){
+        JumpValue = CheckForPreJump(cb);        
         
-        printout(cb);
+        PrintOut(cb);
         
-        cb = startmovingpiece(cb, firstplayerturn, jumpvalue);
-        firstplayerturn = !firstplayerturn;
+        cb = StartMovingPiece(cb, FirstPlayerTurn, JumpValue);
+        FirstPlayerTurn = !FirstPlayerTurn;
                 
     }
 
-    if(rungame == false){
+    if(RunGame == false){
         System.exit(0);
     }
 }
 
-public static int[][] checkforprejump(int[][] cb){
-    int[][] jumpvalue = {{0,0,0} , {0,0,0} , {0,0,0}};
+public static int[][] CheckForPreJump(int[][] cb){
+    int[][] JumpValue = {{0,0,0} , {0,0,0} , {0,0,0}};
     for(int x = 1, y = 1, i = 0; x < 9; y++){
         if(y == 9){
             y = 1;
@@ -128,9 +128,9 @@ public static int[][] checkforprejump(int[][] cb){
                 System.out.println("1");
                 if((cb[x - 1][y - 1] % 1000000) - 1 / 10 == 2 ||
                    (cb[x - 1][y + 1] % 1000000) - 1 / 10 == 2){
-                    jumpvalue[i][0] = 1;
-                    jumpvalue[i][1] = x;
-                    jumpvalue[i][2] = y;
+                    JumpValue[i][0] = 1;
+                    JumpValue[i][1] = x;
+                    JumpValue[i][2] = y;
                     i++;
                 }
                 break;
@@ -138,9 +138,9 @@ public static int[][] checkforprejump(int[][] cb){
                 System.out.println("2");
                 if((cb[x + 1][y - 1] % 1000000) - 1 / 10 == 1 ||
                    (cb[x + 1][y + 1] % 1000000) - 1 / 10 == 1){
-                    jumpvalue[i][0] = 2;
-                    jumpvalue[i][1] = x;
-                    jumpvalue[i][2] = y;
+                    JumpValue[i][0] = 2;
+                    JumpValue[i][1] = x;
+                    JumpValue[i][2] = y;
                     i++;
                 }
                 break;
@@ -153,13 +153,13 @@ public static int[][] checkforprejump(int[][] cb){
             x = x + 1;
         }
     }
-    return jumpvalue;
+    return JumpValue;
 }
 
-public static boolean checkmovevalid(int[][] cb, int row, int column,
-        int rowchange, int columnchange, boolean firstplayerturn){
-    boolean mustjumpleft, mustjumpright;
-    int piececolor, leftsecondpiececolor, rightsecondpiececolor, rowdif;
+public static boolean CheckMoveValid(int[][] cb, int row, int column,
+        int RowChange, int ColumnChange, boolean FirstPlayerTurn){
+    boolean MustJumpLeft, MustJumpRight;
+    int PieceColor, LeftSecondPieceColor, RightSecondPieceColor, RowDifference;
     
     //first checks if requested piece is actually a piece
     if(cb[row][column] % 1000000 == 0){
@@ -168,21 +168,21 @@ public static boolean checkmovevalid(int[][] cb, int row, int column,
     
     //checks if requested piece belongs to player
     if((((((cb[row][column] % 1000000) - 1) / 10) == 2) 
-            && firstplayerturn == false) ||
+            && FirstPlayerTurn == false) ||
        (((((cb[row][column] % 1000000) - 1) / 10) == 1) 
-            && firstplayerturn == true )) {
+            && FirstPlayerTurn == true )) {
         System.out.println("NOT YOUR PIECE");
         return false;
     }
     
     //checks to make sure piece isnt moving backwards
-    if(firstplayerturn){
-        if(rowchange >= row){
+    if(FirstPlayerTurn){
+        if(RowChange >= row){
             System.out.println("Can't move backwards");
             return false;
         }
     }else{
-        if(rowchange <= row){
+        if(RowChange <= row){
             System.out.println("Can't move backwards");
             return false;
         }
@@ -190,57 +190,57 @@ public static boolean checkmovevalid(int[][] cb, int row, int column,
     
     //checks piece color and color of any piece that may be directly 
     //ahead of piece
-    piececolor                = (((cb[row][column]         % 1000000) - 1)
+    PieceColor                = (((cb[row][column]         % 1000000) - 1)
             / 10);
-    if(firstplayerturn){
-        leftsecondpiececolor  = (((cb[row - 1][column - 1] % 1000000) - 1)
+    if(FirstPlayerTurn){
+        LeftSecondPieceColor  = (((cb[row - 1][column - 1] % 1000000) - 1)
             / 10);
-        rightsecondpiececolor = (((cb[row - 1][column + 1] % 1000000) - 1)
+        RightSecondPieceColor = (((cb[row - 1][column + 1] % 1000000) - 1)
             / 10);
     }else{
-        leftsecondpiececolor  = (((cb[row + 1][column - 1] % 1000000) - 1)
+        LeftSecondPieceColor  = (((cb[row + 1][column - 1] % 1000000) - 1)
             / 10);
-        rightsecondpiececolor = (((cb[row + 1][column + 1] % 1000000) - 1)
+        RightSecondPieceColor = (((cb[row + 1][column + 1] % 1000000) - 1)
             / 10);
     }
         
     //checks if there is a piece ahead that must be jumped
-    mustjumpright = (rightsecondpiececolor != piececolor 
-        && rightsecondpiececolor != 0);
-    mustjumpleft  = (leftsecondpiececolor  != piececolor 
-        && leftsecondpiececolor  != 0);
+    MustJumpRight = (RightSecondPieceColor != PieceColor 
+        && RightSecondPieceColor != 0);
+    MustJumpLeft  = (LeftSecondPieceColor  != PieceColor 
+        && LeftSecondPieceColor  != 0);
     
-    if(firstplayerturn){
-        rowdif = -2;
+    if(FirstPlayerTurn){
+        RowDifference = -2;
     }else{
-        rowdif =  2;
+        RowDifference =  2;
     }
     
-    if((mustjumpright == false) && (mustjumpleft == false)){
-        if(columnchange == column || Math.abs(columnchange - column) > 1){
+    if((MustJumpRight == false) && (MustJumpLeft == false)){
+        if(ColumnChange == column || Math.abs(ColumnChange - column) > 1){
             System.out.println("Can't move there");
             return false;
         }
     }else{
-        if(mustjumpright && !mustjumpleft){
-            if(!(rowchange == row + rowdif && columnchange == column + 2)){
-                if(cb[row + rowdif][column + 2] % 1000000 == 1){
+        if(MustJumpRight && !MustJumpLeft){
+            if(!(RowChange == row + RowDifference && ColumnChange == column + 2)){
+                if(cb[row + RowDifference][column + 2] % 1000000 == 1){
                     System.out.println("Must jump right");
                     return false;
                 }
             }
-        }else if(mustjumpleft && !mustjumpright){
-            if(!(rowchange == row + rowdif && columnchange == column - 2)){
-                if(cb[row + rowdif][column - 2] % 1000000 == 1){
+        }else if(MustJumpLeft && !MustJumpRight){
+            if(!(RowChange == row + RowDifference && ColumnChange == column - 2)){
+                if(cb[row + RowDifference][column - 2] % 1000000 == 1){
                     System.out.println("Must jump left");
                     return false;
                 }
             }
-        }else if(mustjumpright && mustjumpleft){
-            if(!(((rowchange == row + rowdif && columnchange == column + 2) &&
-                   cb[row + rowdif][column + 2] % 1000000 == 1            ) || 
-                  (rowchange == row + rowdif && columnchange == column - 2) &&
-                   cb[row + rowdif][column - 2] % 1000000 == 1)){
+        }else if(MustJumpRight && MustJumpLeft){
+            if(!(((RowChange == row + RowDifference && ColumnChange == column + 2) &&
+                   cb[row + RowDifference][column + 2] % 1000000 == 1            ) || 
+                  (RowChange == row + RowDifference && ColumnChange == column - 2) &&
+                   cb[row + RowDifference][column - 2] % 1000000 == 1)){
                 System.out.println("Must make jump");
                 return false;
             }
@@ -248,7 +248,7 @@ public static boolean checkmovevalid(int[][] cb, int row, int column,
     }
     
     //checks to see if player is trying to move onto full space
-    if(cb[rowchange][columnchange] != 9000001){
+    if(cb[RowChange][ColumnChange] != 9000001){
         System.out.println("Can't move on a full space");
         return false;
     }
@@ -257,20 +257,20 @@ public static boolean checkmovevalid(int[][] cb, int row, int column,
     return true;
 }
 
-public static int[][] movepiece(int[][] cb, int row, int column, int rowchange,
-        int columnchange, boolean firstplayerturn){
+public static int[][] MovePiece(int[][] cb, int row, int column, int RowChange,
+        int ColumnChange, boolean FirstPlayerTurn){
     
-    cb[rowchange][columnchange] = cb[row][column];
+    cb[RowChange][ColumnChange] = cb[row][column];
     cb[row][column] = 9000001;
-    if((int)Math.abs(rowchange - row) == 2){
-        if(firstplayerturn){
-            if(columnchange - column == 2){
+    if((int)Math.abs(RowChange - row) == 2){
+        if(FirstPlayerTurn){
+            if(ColumnChange - column == 2){
                 cb[row - 1][column + 1] = 9000001;
             }else{
                 cb[row - 1][column - 1] = 9000001;
             }
         }else{
-            if(columnchange - column == 2){
+            if(ColumnChange - column == 2){
                 cb[row + 1][column + 1] = 9000001;
             }else{
                 cb[row + 1][column - 1] = 9000001;
@@ -280,41 +280,41 @@ public static int[][] movepiece(int[][] cb, int row, int column, int rowchange,
     return cb;
 }
 
-public static int[][] startmovingpiece(int[][] cb, boolean firstplayerturn,
-        int[][] jumpvalue){
-    int row, column, rowchange, columnchange;
-    boolean isvalidmove, movingpiece;
+public static int[][] StartMovingPiece(int[][] cb, boolean FirstPlayerTurn,
+        int[][] JumpValue){
+    int row, column, RowChange, ColumnChange;
+    boolean IsValidMove, MovingPiece;
     
-    if(jumpvalue[0][0] == 0 ||
-      (jumpvalue[0][0] == 1 && !firstplayerturn) ||
-      (jumpvalue[0][0] == 2 && firstplayerturn )){
-        if(firstplayerturn){
+    if(JumpValue[0][0] == 0 ||
+      (JumpValue[0][0] == 1 && !FirstPlayerTurn) ||
+      (JumpValue[0][0] == 2 && FirstPlayerTurn )){
+        if(FirstPlayerTurn){
             System.out.println("Player one make your move");
         }else{
             System.out.println("Player two make your move");
         }
-    }else if(jumpvalue[0][0] == 1 && firstplayerturn){
+    }else if(JumpValue[0][0] == 1 && FirstPlayerTurn){
         System.out.println("Player one make your move "
                 + "\nYou must make a jump \n"
-                         + "Peice at "  + jumpvalue[0][1] + " " 
-                + jumpvalue[0][2]);
-        if(jumpvalue[1][0] == 1){
-            System.out.println("Or at " + jumpvalue[1][1] + " " 
-                + jumpvalue[1][2]);
+                         + "Peice at "  + JumpValue[0][1] + " " 
+                + JumpValue[0][2]);
+        if(JumpValue[1][0] == 1){
+            System.out.println("Or at " + JumpValue[1][1] + " " 
+                + JumpValue[1][2]);
         }
-    }else if(jumpvalue[0][0] == 2 && !firstplayerturn){
+    }else if(JumpValue[0][0] == 2 && !FirstPlayerTurn){
         System.out.println("Player two make your move "
                 + "\nYou must make a jump \n"
-                         + "Peice at "  + jumpvalue[0][1] + " " 
-                + jumpvalue[0][2]);
-        if(jumpvalue[1][0] == 2){
-            System.out.println("Or at " + jumpvalue[1][1] + " " 
-                + jumpvalue[1][2]);
+                         + "Peice at "  + JumpValue[0][1] + " " 
+                + JumpValue[0][2]);
+        if(JumpValue[1][0] == 2){
+            System.out.println("Or at " + JumpValue[1][1] + " " 
+                + JumpValue[1][2]);
         }
     }
-    movingpiece = true;
+    MovingPiece = true;
     
-    while(movingpiece){
+    while(MovingPiece){
         System.out.println("Select row and column of piece you want to move."
                 + " row first then column.");
         row = stdin.nextInt();
@@ -322,28 +322,28 @@ public static int[][] startmovingpiece(int[][] cb, boolean firstplayerturn,
     
         System.out.println("Select row and column of space you want to move "
                 + "piece to. row first then column.");
-        rowchange = stdin.nextInt();
-        columnchange = stdin.nextInt();
+        RowChange = stdin.nextInt();
+        ColumnChange = stdin.nextInt();
     
-        isvalidmove = checkmovevalid(cb, row, column, rowchange, 
-                columnchange, firstplayerturn);
+        IsValidMove = CheckMoveValid(cb, row, column, RowChange, 
+                ColumnChange, FirstPlayerTurn);
         
         
-        if(isvalidmove){
-            cb = movepiece(cb, row, column, rowchange, columnchange,
-                    firstplayerturn);
-            movingpiece = false;
+        if(IsValidMove){
+            cb = MovePiece(cb, row, column, RowChange, ColumnChange,
+                    FirstPlayerTurn);
+            MovingPiece = false;
         }else{
             System.out.println("Invalid move try again");
-            movingpiece = true;
+            MovingPiece = true;
         }
     }
     return cb;
 }
 
-public static void printout(int[][] cb){
+public static void PrintOut(int[][] cb){
     
-    boolean printboard = true;
+    boolean PrintBoard = true;
     int a, b, c, e;
     int val1, val2, val3;
     char d, val4;
@@ -355,7 +355,7 @@ public static void printout(int[][] cb){
     a    = 0;
     b    = 0;
     
-    while(printboard){
+    while(PrintBoard){
         if(b == 10){
             a = ++a;
             b = 0;
@@ -396,9 +396,9 @@ public static void printout(int[][] cb){
         }
     
         if(b <= 10 && a < 10){
-            printboard = true;
+            PrintBoard = true;
         }else{
-            printboard = false;
+            PrintBoard = false;
             a = 0;
             b = 0;
         }
