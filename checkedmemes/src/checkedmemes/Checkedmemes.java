@@ -98,10 +98,15 @@ public static void main(String[] args) {
     firstplayerturn = true;
     
     while(rungame){
-        jumpvalue = checkforprejump(cb);        
-        
         printout(cb);
-        
+
+        jumpvalue = checkforprejump(cb); 
+
+        System.out.println("jumpvalue1 = " + jumpvalue[0][0] + jumpvalue[0][1] + jumpvalue[0][2]);
+        System.out.println("jumpvalue2 = " + jumpvalue[1][0] + jumpvalue[1][1] + jumpvalue[1][2]);
+        System.out.println("jumpvalue3 = " + jumpvalue[2][0] + jumpvalue[2][1] + jumpvalue[2][2]);
+        System.out.println("jumpvalue4 = " + jumpvalue[3][0] + jumpvalue[3][1] + jumpvalue[3][2]);
+
         cb = startmovingpiece(cb, firstplayerturn, jumpvalue);
         firstplayerturn = !firstplayerturn;
                 
@@ -113,15 +118,27 @@ public static void main(String[] args) {
 }
 
 public static int[][] checkforprejump(int[][] cb){
-    int[][] jumpvalue = {{0,0,0} , {0,0,0} , {0,0,0}};
+    int[][] jumpvalue;
+    jumpvalue = new int[4][3];
+    int piececolor;
     for(int x = 1, y = 1, i = 0; x < 9; y++){
         if(y == 9){
             y = 1;
         }
         
-        switch (((cb[x][y] - 1) % 1000000) / 10) {
+        switch ((int)((cb[x][y]) % 1000000) % 100000 / 10) {
             case 1:
-                System.out.println("1");
+                piececolor = 1;
+                break;
+            case 2:
+                piececolor = 2;
+                break;
+            default:
+                piececolor = 3;
+                break;
+        }
+        switch (piececolor) {
+            case 1:
                 if((cb[x - 1][y - 1] % 1000000) - 1 / 10 == 2 ||
                    (cb[x - 1][y + 1] % 1000000) - 1 / 10 == 2){
                     jumpvalue[i][0] = 1;
@@ -131,7 +148,6 @@ public static int[][] checkforprejump(int[][] cb){
                 }
                 break;
             case 2:
-                System.out.println("2");
                 if((cb[x + 1][y - 1] % 1000000) - 1 / 10 == 1 ||
                    (cb[x + 1][y + 1] % 1000000) - 1 / 10 == 1){
                     jumpvalue[i][0] = 2;
@@ -141,7 +157,6 @@ public static int[][] checkforprejump(int[][] cb){
                 }
                 break;
             default:
-                System.out.println("0");
                 break;
         }
         
@@ -268,26 +283,11 @@ public static int[][] startmovingpiece(int[][] cb, boolean firstplayerturn, int[
     int row, column, rowchange, columnchange;
     boolean isvalidmove, movingpiece;
     
-    if(jumpvalue[0][0] == 0 ||
-      (jumpvalue[0][0] == 1 && !firstplayerturn) ||
-      (jumpvalue[0][0] == 2 && firstplayerturn )){
-        if(firstplayerturn){
-            System.out.println("Player one make your move");
-        }else{
-            System.out.println("Player two make your move");
-        }
-    }else if(jumpvalue[0][0] == 1 && firstplayerturn){
-        System.out.println("Player one make your move \nYou must make a jump \n"
-                         + "Peice at "  + jumpvalue[0][1] + " " + jumpvalue[0][2]);
-        if(jumpvalue[1][0] == 1){
-            System.out.println("Or at " + jumpvalue[1][1] + " " + jumpvalue[1][2]);
-        }
-    }else if(jumpvalue[0][0] == 2 && !firstplayerturn){
-        System.out.println("Player two make your move \nYou must make a jump \n"
-                         + "Peice at "  + jumpvalue[0][1] + " " + jumpvalue[0][2]);
-        if(jumpvalue[1][0] == 2){
-            System.out.println("Or at " + jumpvalue[1][1] + " " + jumpvalue[1][2]);
-        }
+
+    if(firstplayerturn){
+        System.out.println("Player one make your move");
+    }else{
+        System.out.println("Player two make your move");
     }
     movingpiece = true;
     
