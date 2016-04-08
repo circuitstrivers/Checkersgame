@@ -23,7 +23,7 @@ static Scanner stdin = new Scanner(System.in);
     private static final int NUM_PIECES = 12 ;
 
     @Override
-public void start(Stage primarystage){
+public void start(Stage primaryStage){
     GridPane checkerBoard = new GridPane();
     configureBoardLayout(checkerBoard);
     addSquaresToBoard(checkerBoard);
