@@ -101,15 +101,18 @@ public static void main(String[] args) {
     RunGame = true;
     FirstPlayerTurn = true;
     
-    while(RunGame){
+    while(RunGame == true){
         PrintOut(cb);
 
         JumpValue = CheckPreJump(cb, FirstPlayerTurn); 
 
         cb = StartMovingPiece(cb, FirstPlayerTurn, JumpValue);
-
-        FirstPlayerTurn = !FirstPlayerTurn;
-                
+        
+        if(cb[0][0] == 999){
+            RunGame = false;
+        }else{
+            FirstPlayerTurn = !FirstPlayerTurn;
+        }    
     }
     if(RunGame == false){
         System.exit(0);
@@ -313,49 +316,55 @@ public static int[][] StartMovingPiece(int[][] cb, boolean FirstPlayerTurn,
     
     while(MovingPiece){
         System.out.println("Select row and column of piece you want to move."
-                + " row first then column.");
+                + " row first then column. Or type 999 to exit");
         row = stdin.nextInt();
-        column = stdin.nextInt();
-    
-        if((JumpValue[0][0] == 1 &&  FirstPlayerTurn) || 
-           (JumpValue[0][0] == 2 && !FirstPlayerTurn)) {
-            while((row != JumpValue[0][1] || column != JumpValue[0][2]) &&
-                  (row != JumpValue[1][1] || column != JumpValue[1][2]) &&
-                  (row != JumpValue[2][1] || column != JumpValue[2][2]) &&
-                  (row != JumpValue[3][1] || column != JumpValue[3][2])){
-                System.out.println("There is a jump to be made at ");
-                for(int i = 0; i < 4; i++){
-                    if(i > 0 && JumpValue[i][0] != 0){
-                        System.out.println("OR AT");
-                    }
-                    if(JumpValue[i][0] != 0){
-                        System.out.print(JumpValue[i][1]);
-                        System.out.println(" " + JumpValue[i][2]);
-                    }
-                }
-                System.out.println("Select row and column of a piece that has"
-                                 + "to make a jump");
-                row = stdin.nextInt();
-                column = stdin.nextInt();
-            }
-        }
         
-        System.out.println("Select row and column of space you want to move "
-                + "piece to. row first then column.");
-        RowChange = stdin.nextInt();
-        ColumnChange = stdin.nextInt();
-    
-        IsValidMove = CheckMoveValid(cb, row, column, RowChange, 
-                ColumnChange, FirstPlayerTurn);
-        
-        
-        if(IsValidMove){
-            cb = MovePiece(cb, row, column, RowChange, ColumnChange,
-                    FirstPlayerTurn);
+        if(row == 999){
+            cb[0][0] = 999;
             MovingPiece = false;
         }else{
-            System.out.println("Invalid move try again");
-            MovingPiece = true;
+            column = stdin.nextInt();
+    
+            if((JumpValue[0][0] == 1 &&  FirstPlayerTurn) || 
+               (JumpValue[0][0] == 2 && !FirstPlayerTurn)) {
+                while((row != JumpValue[0][1] || column != JumpValue[0][2]) &&
+                      (row != JumpValue[1][1] || column != JumpValue[1][2]) &&
+                      (row != JumpValue[2][1] || column != JumpValue[2][2]) &&
+                     (row != JumpValue[3][1] || column != JumpValue[3][2])){
+                    System.out.println("There is a jump to be made at ");
+                    for(int i = 0; i < 4; i++){
+                        if(i > 0 && JumpValue[i][0] != 0){
+                            System.out.println("OR AT");
+                        }
+                        if(JumpValue[i][0] != 0){
+                            System.out.print(JumpValue[i][1]);
+                            System.out.println(" " + JumpValue[i][2]);
+                        }
+                    }
+                    System.out.println("Select row and column of a piece that has"
+                                     + "to make a jump");
+                    row = stdin.nextInt();
+                    column = stdin.nextInt();
+                }
+            }
+        
+            System.out.println("Select row and column of space you want to move "
+                    + "piece to. row first then column.");
+            RowChange = stdin.nextInt();
+            ColumnChange = stdin.nextInt();
+    
+            IsValidMove = CheckMoveValid(cb, row, column, RowChange, 
+                    ColumnChange, FirstPlayerTurn);
+            
+        
+            if(IsValidMove){
+                cb = MovePiece(cb, row, column, RowChange, ColumnChange,
+                        FirstPlayerTurn);
+                MovingPiece = false;
+            }else{
+                System.out.println("Invalid move try again");
+                MovingPiece = true;
+            }
         }
     }
     return cb;
