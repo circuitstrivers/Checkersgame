@@ -106,16 +106,8 @@ public static void main(String[] args) {
 
         JumpValue = CheckPreJump(cb, FirstPlayerTurn); 
 
-        System.out.println("jumpvalue1 = " + JumpValue[0][0] + JumpValue[0][1]
-                + JumpValue[0][2]);
-        System.out.println("jumpvalue2 = " + JumpValue[1][0] + JumpValue[1][1]
-                + JumpValue[1][2]);
-        System.out.println("jumpvalue3 = " + JumpValue[2][0] + JumpValue[2][1]
-                + JumpValue[2][2]);
-        System.out.println("jumpvalue4 = " + JumpValue[3][0] + JumpValue[3][1]
-                + JumpValue[3][2]);
-
         cb = StartMovingPiece(cb, FirstPlayerTurn, JumpValue);
+
         FirstPlayerTurn = !FirstPlayerTurn;
                 
     }
