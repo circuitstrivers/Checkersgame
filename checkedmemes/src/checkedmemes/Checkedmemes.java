@@ -97,7 +97,7 @@ public static void main(String[] args) {
     
     int[][] JumpValue;
     
-    boolean RunGame, FirstPlayerTurn;
+    boolean RunGame, FirstPlayerTurn, CheckingDoubleJump;
     
     RunGame = true;
     FirstPlayerTurn = true;
@@ -106,8 +106,14 @@ public static void main(String[] args) {
         PrintOut(cb);
 
         JumpValue = CheckPreJump(cb, FirstPlayerTurn); 
-
-        cb = StartMovingPiece(cb, FirstPlayerTurn, JumpValue);
+        
+        CheckingDoubleJump = true;
+        while(CheckingDoubleJump){
+            cb = StartMovingPiece(cb, FirstPlayerTurn, JumpValue);
+        
+            JumpValue = CheckPreJump(cb, FirstPlayerTurn);
+        
+        }
         
         if(cb[0][0] == 999){
             RunGame = false;
