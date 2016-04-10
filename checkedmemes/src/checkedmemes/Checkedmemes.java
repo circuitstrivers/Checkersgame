@@ -108,12 +108,12 @@ public static void main(String[] args) {
         JumpValue = CheckPreJump(cb, FirstPlayerTurn); 
         
         CheckingDoubleJump = true;
-        while(CheckingDoubleJump){
+       // while(CheckingDoubleJump){
             cb = StartMovingPiece(cb, FirstPlayerTurn, JumpValue);
         
             JumpValue = CheckPreJump(cb, FirstPlayerTurn);
         
-        }
+        //}
         
         if(cb[0][0] == 999){
             RunGame = false;
