@@ -97,13 +97,14 @@ public static void main(String[] args) {
     int[][] JumpValue;
     
     boolean RunGame, FirstPlayerTurn;
+    
     RunGame = true;
     FirstPlayerTurn = true;
     
     while(RunGame){
         PrintOut(cb);
 
-        JumpValue = checkforprejump(cb, FirstPlayerTurn); 
+        JumpValue = CheckPreJump(cb, FirstPlayerTurn); 
 
         System.out.println("jumpvalue1 = " + JumpValue[0][0] + JumpValue[0][1]
                 + JumpValue[0][2]);
@@ -123,7 +124,7 @@ public static void main(String[] args) {
     }
 }
 
-public static int[][] checkforprejump(int[][] cb, boolean FirstPlayerTurn){
+public static int[][] CheckPreJump(int[][] cb, boolean FirstPlayerTurn){
     int[][] JumpValue;
     JumpValue = new int[4][3];
     
@@ -157,7 +158,7 @@ public static int[][] checkforprejump(int[][] cb, boolean FirstPlayerTurn){
             if((cb[    x][    y] % 1000000) % 100000 / 10 == 1 &&
              (((cb[x + 1][y + 1] % 1000000) % 100000 / 10 == 2)|| 
                (cb[x + 1][y - 1] % 1000000) % 100000 / 10 == 2)){
-                JumpValue[i][0] = 1;
+                JumpValue[i][0] = 2;
                 JumpValue[i][1] = x;
                 JumpValue[i][2] = y;
                 i++;
@@ -298,7 +299,7 @@ public static int[][] MovePiece(int[][] cb, int row, int column, int RowChange,
 public static int[][] StartMovingPiece(int[][] cb, boolean FirstPlayerTurn,
         int[][] JumpValue){
     int row, column, RowChange, ColumnChange;
-    boolean IsValidMove, MovingPiece;
+    boolean IsValidMove, MovingPiece, JumpRequired;
     
 
     if(FirstPlayerTurn){
@@ -314,6 +315,29 @@ public static int[][] StartMovingPiece(int[][] cb, boolean FirstPlayerTurn,
         row = stdin.nextInt();
         column = stdin.nextInt();
     
+        if((JumpValue[0][0] == 1 &&  FirstPlayerTurn) || 
+           (JumpValue[0][0] == 2 && !FirstPlayerTurn)) {
+            while((row != JumpValue[0][1] || column != JumpValue[0][2]) &&
+                  (row != JumpValue[1][1] || column != JumpValue[1][2]) &&
+                  (row != JumpValue[2][1] || column != JumpValue[2][2]) &&
+                  (row != JumpValue[3][1] || column != JumpValue[3][2])){
+                System.out.println("There is a jump to be made at ");
+                for(int i = 0; i < 4; i++){
+                    if(i > 0 && JumpValue[i][0] != 0){
+                        System.out.println("OR AT");
+                    }
+                    if(JumpValue[i][0] != 0){
+                        System.out.print(JumpValue[i][1]);
+                        System.out.println(" " + JumpValue[i][2]);
+                    }
+                }
+                System.out.println("Select row and column of a piece that has"
+                                 + "to make a jump");
+                row = stdin.nextInt();
+                column = stdin.nextInt();
+            }
+        }
+        
         System.out.println("Select row and column of space you want to move "
                 + "piece to. row first then column.");
         RowChange = stdin.nextInt();
