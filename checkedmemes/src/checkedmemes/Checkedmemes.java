@@ -35,7 +35,8 @@ public void start(Stage primaryStage){
     BorderPane root = new BorderPane(checkerBoard);
     primaryStage.setScene(new Scene(root, 400, 400));
     primaryStage.show();
-}    
+}
+
 private void addSquaresToBoard(GridPane board) {
     Color[] squareColors = new Color[] {Color.RED, Color.BLACK};
     for (int row = 0; row < BOARD_SIZE; row++) {
@@ -304,7 +305,7 @@ public static int[][] MovePiece(int[][] cb, int row, int column, int RowChange,
 public static int[][] StartMovingPiece(int[][] cb, boolean FirstPlayerTurn,
         int[][] JumpValue){
     int row, column, RowChange, ColumnChange;
-    boolean IsValidMove, MovingPiece, JumpRequired;
+    boolean IsValidMove, MovingPiece;
     
 
     if(FirstPlayerTurn){
