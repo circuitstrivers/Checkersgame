@@ -103,7 +103,7 @@ public static void main(String[] args) {
     while(RunGame){
         PrintOut(cb);
 
-        JumpValue = checkforprejump(cb); 
+        JumpValue = checkforprejump(cb, FirstPlayerTurn); 
 
         System.out.println("jumpvalue1 = " + JumpValue[0][0] + JumpValue[0][1]
                 + JumpValue[0][2]);
@@ -123,52 +123,52 @@ public static void main(String[] args) {
     }
 }
 
-public static int[][] checkforprejump(int[][] cb){
+public static int[][] checkforprejump(int[][] cb, boolean FirstPlayerTurn){
     int[][] JumpValue;
     JumpValue = new int[4][3];
-    int piececolor;
-    for(int x = 1, y = 1, i = 0; x < 9; y++){
-        if(y == 9){
-            y = 1;
-        }
-        
-        switch ((int)((cb[x][y]) % 1000000) % 100000 / 10) {
-            case 1:
-                piececolor = 1;
-                break;
-            case 2:
-                piececolor = 2;
-                break;
-            default:
-                piececolor = 3;
-                break;
-        }
-        switch (piececolor) {
-            case 1:
-                if((cb[x - 1][y - 1] % 1000000) - 1 / 10 == 2 ||
-                   (cb[x - 1][y + 1] % 1000000) - 1 / 10 == 2){
-                    JumpValue[i][0] = 1;
-                    JumpValue[i][1] = x;
-                    JumpValue[i][2] = y;
-                    i++;
-                }
-                break;
-            case 2:
-                if((cb[x + 1][y - 1] % 1000000) - 1 / 10 == 1 ||
-                   (cb[x + 1][y + 1] % 1000000) - 1 / 10 == 1){
-                    JumpValue[i][0] = 2;
-                    JumpValue[i][1] = x;
-                    JumpValue[i][2] = y;
-                    i++;
-                }
-                break;
-            default:
-                break;
-        }
-        if(y == 8){
-            x = x + 1;
+    
+    if(FirstPlayerTurn == true){
+        for(int x = 1, y = 1, i = 0; x < 9; y++){
+            if(y == 9){
+                y = 1;
+            }
+            
+            if((cb[    x][    y] % 1000000) % 100000 / 10 == 2 &&
+             (((cb[x - 1][y + 1] % 1000000) % 100000 / 10 == 1)|| 
+               (cb[x - 1][y - 1] % 1000000) % 100000 / 10 == 1)){
+                JumpValue[i][0] = 1;
+                JumpValue[i][1] = x;
+                JumpValue[i][2] = y;
+                i++;
+            }
+            
+            if(y == 8){
+                x = x + 1;
+            }
         }
     }
+    
+    if(FirstPlayerTurn == false){
+        for(int x = 1, y = 1, i = 0; x < 9; y++){
+            if(y == 9){
+                y = 1;
+            }
+            
+            if((cb[    x][    y] % 1000000) % 100000 / 10 == 1 &&
+             (((cb[x + 1][y + 1] % 1000000) % 100000 / 10 == 2)|| 
+               (cb[x + 1][y - 1] % 1000000) % 100000 / 10 == 2)){
+                JumpValue[i][0] = 1;
+                JumpValue[i][1] = x;
+                JumpValue[i][2] = y;
+                i++;
+            }
+            
+            if(y == 8){
+                x = x + 1;
+            }
+        }
+    }
+    
     return JumpValue;
 }
 
