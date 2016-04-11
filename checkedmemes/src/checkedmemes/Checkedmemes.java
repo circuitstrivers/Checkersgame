@@ -28,7 +28,7 @@ public void start(Stage primaryStage){
     configureBoardLayout(checkerBoard);
     addSquaresToBoard(checkerBoard);
 
-    Circle[] redPieces = new Circle[NUM_PIECES];
+    Circle[] redPieces   = new Circle[NUM_PIECES];
     Circle[] blackPieces = new Circle[NUM_PIECES];
     addPiecesToBoard(checkerBoard, redPieces, blackPieces);
         
