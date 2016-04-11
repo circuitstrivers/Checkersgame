@@ -51,7 +51,7 @@ private void addPiecesToBoard(GridPane checkerBoard, Circle[] redPieces,
     for (int i=0; i < NUM_PIECES; i++) {
         redPieces[i] = new Circle(SQUARE_SIZE / 2 - 4, Color.RED);
         redPieces[i].setStroke(Color.BLACK);
-        checkerBoard.add(redPieces[i],   i % (BOARD_SIZE/2) * 2 + 
+        checkerBoard.add(redPieces[i],   i % (BOARD_SIZE / 2) * 2 + 
             (2 * i / BOARD_SIZE) % 2, 
             BOARD_SIZE - 1 - (i * 2) / BOARD_SIZE);
 
@@ -103,13 +103,9 @@ public static void main(String[] args) {
     
     while(RunGame){
         PrintOut(cb);
-
-        JumpValue = CheckPreJump(cb, FirstPlayerTurn); 
-
-        cb = StartMovingPiece(cb, FirstPlayerTurn, JumpValue);
-
-        FirstPlayerTurn = !FirstPlayerTurn;
-                
+        JumpValue       = CheckPreJump(cb, FirstPlayerTurn); 
+        cb              = StartMovingPiece(cb, FirstPlayerTurn, JumpValue);
+        FirstPlayerTurn = !FirstPlayerTurn;         
     }
     if(RunGame == false){
         System.exit(0);
@@ -125,7 +121,6 @@ public static int[][] CheckPreJump(int[][] cb, boolean FirstPlayerTurn){
             if(y == 9){
                 y = 1;
             }
-            
             if((cb[    x][    y] % 1000000) % 100000 / 10 == 2){
                 if(((((cb[x - 1][y + 1] % 1000000) % 100000 / 10 == 1)&&
                       (cb[x - 2][y + 2] % 1000000) % 100000 / 10 == 0)&&
@@ -139,19 +134,16 @@ public static int[][] CheckPreJump(int[][] cb, boolean FirstPlayerTurn){
                     i++;
                 }
             }
-            
             if(y == 8){
                 x = x + 1;
             }
         }
     }
-    
     if(FirstPlayerTurn == false){
         for(int x = 1, y = 1, i = 0; x < 9; y++){
             if(y == 9){
                 y = 1;
             }
-            
             if((cb[    x][    y] % 1000000) % 100000 / 10 == 1){
                 if(((((cb[x + 1][y + 1] % 1000000) % 100000 / 10 == 2)&&
                       (cb[x + 2][y + 2] % 1000000) % 100000 / 10 == 0)&&
@@ -165,13 +157,11 @@ public static int[][] CheckPreJump(int[][] cb, boolean FirstPlayerTurn){
                     i++;
                 }
             }
-            
             if(y == 8){
                 x = x + 1;
             }
         }
     }
-    
     return JumpValue;
 }
 
@@ -192,7 +182,6 @@ public static boolean CheckMoveValid(int[][] cb, int row, int column,
         System.out.println("NOT YOUR PIECE");
         return false;
     }
-    
     //checks to make sure piece isnt moving backwards
     if(FirstPlayerTurn){
         if(RowChange >= row){
@@ -208,7 +197,7 @@ public static boolean CheckMoveValid(int[][] cb, int row, int column,
     
     //checks piece color and color of any piece that may be directly 
     //ahead of piece
-    PieceColor                = (((cb[row][column]         % 1000000) - 1)
+    PieceColor                = (((cb[row]    [column]     % 1000000) - 1)
             / 10);
     if(FirstPlayerTurn){
         LeftSecondPieceColor  = (((cb[row - 1][column - 1] % 1000000) - 1)
@@ -342,12 +331,11 @@ public static int[][] StartMovingPiece(int[][] cb, boolean FirstPlayerTurn,
         
         System.out.println("Select row and column of space you want to move "
                          + "piece to. row first then column.");
-        RowChange = stdin.nextInt();
+        RowChange    = stdin.nextInt();
         ColumnChange = stdin.nextInt();
     
         IsValidMove = CheckMoveValid(cb, row, column, RowChange, 
                 ColumnChange, FirstPlayerTurn);
-        
         
         if(IsValidMove){
             cb = MovePiece(cb, row, column, RowChange, ColumnChange,
