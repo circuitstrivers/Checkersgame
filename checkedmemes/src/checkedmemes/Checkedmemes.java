@@ -393,7 +393,7 @@ public static void PrintOut(int[][] cb){
             }
             b++;
         }
-        if(a < 11 && b < 11){
+        if(a < 10 && b < 11){
             if(val2 == 0 && val3 == 9){
                 if(val1 == 0){
                     val4 = 'X';
