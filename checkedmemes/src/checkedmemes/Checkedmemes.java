@@ -18,9 +18,9 @@ import javafx.scene.shape.*;
 public class Checkedmemes extends Application {
 
 static Scanner stdin = new Scanner(System.in);
-    private static final int BOARD_SIZE  =  8;
-    private static final int SQUARE_SIZE = 50;
-    private static final int NUM_PIECES  = 12;
+    private static final int BOARD_SIZE  =  8 ;
+    private static final int SQUARE_SIZE = 50 ;
+    private static final int NUM_PIECES  = 12 ;
 
     @Override
 public void start(Stage primaryStage){
@@ -28,7 +28,7 @@ public void start(Stage primaryStage){
     configureBoardLayout(checkerBoard);
     addSquaresToBoard(checkerBoard);
 
-    Circle[] redPieces   = new Circle[NUM_PIECES];
+    Circle[] redPieces = new Circle[NUM_PIECES];
     Circle[] blackPieces = new Circle[NUM_PIECES];
     addPiecesToBoard(checkerBoard, redPieces, blackPieces);
         
@@ -39,21 +39,21 @@ public void start(Stage primaryStage){
 private void addSquaresToBoard(GridPane board) {
     Color[] squareColors = new Color[] {Color.RED, Color.BLACK};
     for (int row = 0; row < BOARD_SIZE; row++) {
-        for (int column = 0; column < BOARD_SIZE; column++) {
+        for (int col = 0; col < BOARD_SIZE; col++) {
             board.add(new Rectangle(SQUARE_SIZE, SQUARE_SIZE, 
-                squareColors[(row + column) % 2]), column, row);
+                squareColors[(row + col) % 2]), col, row);
         }
     }
 }
     
 private void addPiecesToBoard(GridPane checkerBoard, Circle[] redPieces,
         Circle[] blackPieces) {
-    for (int i = 0; i < NUM_PIECES; i++) {
+    for (int i=0; i < NUM_PIECES; i++) {
         redPieces[i] = new Circle(SQUARE_SIZE / 2 - 4, Color.RED);
         redPieces[i].setStroke(Color.BLACK);
-        checkerBoard.add(redPieces[i],
-        i % (BOARD_SIZE/2) * 2 + (2 * i / BOARD_SIZE) % 2, 
-        BOARD_SIZE - 1 - (i * 2) / BOARD_SIZE);
+        checkerBoard.add(redPieces[i],   i % (BOARD_SIZE/2) * 2 + 
+            (2 * i / BOARD_SIZE) % 2, 
+            BOARD_SIZE - 1 - (i * 2) / BOARD_SIZE);
 
         blackPieces[i] = new Circle(SQUARE_SIZE/2 - 4, Color.BLACK);
         blackPieces[i].setStroke(Color.RED);
@@ -64,7 +64,7 @@ private void addPiecesToBoard(GridPane checkerBoard, Circle[] redPieces,
 }
 
 private void configureBoardLayout(GridPane board) {
-    for (int i=0; i < BOARD_SIZE; i++) {
+    for (int i=0; i<BOARD_SIZE; i++) {
         RowConstraints rowConstraints = new RowConstraints();
         rowConstraints.setMinHeight (SQUARE_SIZE);
         rowConstraints.setPrefHeight(SQUARE_SIZE);
@@ -313,7 +313,7 @@ public static int[][] StartMovingPiece(int[][] cb, boolean FirstPlayerTurn,
     
     while(MovingPiece){
         System.out.println("Select row and column of piece you want to move."
-                         + " row first then column.");
+                + " row first then column.");
         row = stdin.nextInt();
         column = stdin.nextInt();
     
@@ -341,7 +341,7 @@ public static int[][] StartMovingPiece(int[][] cb, boolean FirstPlayerTurn,
         }
         
         System.out.println("Select row and column of space you want to move "
-                         + "piece to. row first then column.");
+                + "piece to. row first then column.");
         RowChange = stdin.nextInt();
         ColumnChange = stdin.nextInt();
     
@@ -420,5 +420,5 @@ public static void PrintOut(int[][] cb){
             b = 0;
         }
     }        
-} 
+}
 }
