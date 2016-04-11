@@ -17,6 +17,8 @@ import javafx.scene.shape.*;
 
 public class Checkedmemes extends Application {
 
+static int row, column, RowChange, ColumnChange;
+    
 static Scanner stdin = new Scanner(System.in);
     private static final int BOARD_SIZE  =  8;
     private static final int SQUARE_SIZE = 50;
@@ -83,30 +85,20 @@ private void configureBoardLayout(GridPane board) {
 
 public static void main(String[] args) {
     //Creates an array that sets up the spaces that make up the board
-    int[][] cb = {{48000000, 49000000, 50000000, 51000000, 52000000,
-                   53000000, 54000000, 55000000, 56000000, 48000000},
-                  {49000000,  9000000,  9200011,  9000000,  9200011,
-                   9000000,  9200011,  9000000,  9200011, 49000000},  //Row 1
-                  {50000000,  9000011,  9000000,  9000011,  9000000,
-                   9000011,  9000000,  9000011,  9000000, 50000000},  //Row 2
-                  {51000000,  9000000,  9000011,  9000000,  9000011,
-                   9000000,  9000011,  9000000,  9000011, 51000000},  //Row 3
-                  {52000000,  9000001,  9000000,  9000001,  9000000,
-                   9000001,  9000000,  9000001,  9000000, 52000000},  //Row 4
-                  {53000000,  9000000,  9000001,  9000000,  9000001,
-                   9000000,  9000001,  9000000,  9000001, 53000000},  //Row 5
-                  {54000000,  9000021,  9000000,  9000021,  9000000,
-                   9000021,  9000000,  9000021,  9000000, 54000000},  //Row 6
-                  {55000000,  9000000,  9000021,  9000000,  9000021,
-                   9000000,  9000021,  9000000,  9000021, 55000000},  //Row 7
-                  {56000000,  9100021,  9000000,  9100021,  9000000,
-                   9100021,  9000000,  9100021,  9000000, 56000000},  //Row 8
-                  {48000000, 49000000, 50000000, 51000000, 52000000,
-                   53000000, 54000000, 55000000, 56000000, 48000000}};
+    int[][] cb = {{48000000, 49000000, 50000000, 51000000, 52000000, 53000000, 54000000, 55000000, 56000000, 48000000},
+  {49000000,  9000000,  9200011,  9000000,  9200011, 9000000,  9200011,  9000000,  9200011, 49000000},  //Row 1
+  {50000000,  9000011,  9000000,  9000011,  9000000, 9000011,  9000000,  9000011,  9000000, 50000000},  //Row 2
+  {51000000,  9000000,  9000011,  9000000,  9000011, 9000000,  9000011,  9000000,  9000011, 51000000},  //Row 3
+  {52000000,  9000001,  9000000,  9000001,  9000000, 9000001,  9000000,  9000001,  9000000, 52000000},  //Row 4
+  {53000000,  9000000,  9000001,  9000000,  9000001, 9000000,  9000001,  9000000,  9000001, 53000000},  //Row 5
+  {54000000,  9000021,  9000000,  9000021,  9000000, 9000021,  9000000,  9000021,  9000000, 54000000},  //Row 6
+  {55000000,  9000000,  9000021,  9000000,  9000021, 9000000,  9000021,  9000000,  9000021, 55000000},  //Row 7
+  {56000000,  9100021,  9000000,  9100021,  9000000, 9100021,  9000000,  9100021,  9000000, 56000000},  //Row 8
+  {48000000, 49000000, 50000000, 51000000, 52000000, 53000000, 54000000, 55000000, 56000000, 48000000}};
     
     int[][] JumpValue;
     
-    boolean RunGame, FirstPlayerTurn, CheckingDoubleJump, InitialMove;
+    boolean RunGame, FirstPlayerTurn, CheckingDoubleJump;
     
     RunGame = true;
     FirstPlayerTurn = true;
@@ -115,14 +107,16 @@ public static void main(String[] args) {
         PrintOut(cb);
         JumpValue = CheckPreJump(cb, FirstPlayerTurn); 
         CheckingDoubleJump = true;
-        InitialMove = true;
+        cb = StartMovingPiece(cb, FirstPlayerTurn, JumpValue);
+        if(cb[0][0] != 999) PrintOut(cb);
         while(CheckingDoubleJump){
-            cb = StartMovingPiece(cb, FirstPlayerTurn, JumpValue);
-            InitialMove = false;
             if(cb[0][0] != 999){
                 CheckingDoubleJump = CheckDoubleJump(cb, FirstPlayerTurn, JumpValue);
             }else if(cb[0][0] == 999){
                 CheckingDoubleJump = false;
+            }
+            if(CheckingDoubleJump){
+                cb = MovePiece(cb, FirstPlayerTurn);
             }
         }
         
@@ -139,6 +133,71 @@ public static void main(String[] args) {
 
 public static boolean CheckDoubleJump(int[][] cb, boolean FirstPlayerTurn, 
         int[][] JumpValue){
+    int playerValue;
+    int playerRowChange;
+    int[] JumpingPiece;
+    JumpingPiece = new int[2];
+    boolean IsValidMove;
+    boolean DoubleJumpPresent;
+    
+    if(FirstPlayerTurn){
+        playerRowChange = -2;
+    }else{
+        playerRowChange = 2;
+    }
+    
+    if(RowChange == (row + playerRowChange) && 
+      (ColumnChange == (column + 2) || ColumnChange == (column - 2))){
+        row = RowChange;
+        column = ColumnChange;
+        
+        JumpValue = CheckPreJump(cb, FirstPlayerTurn);
+        for(int i = 0; i < 4; i++){
+            System.out.println(JumpValue[i][0] + " " + JumpValue[i][1] + " " + JumpValue[i][2]);
+        }
+        if(FirstPlayerTurn){
+            playerValue = 1;
+        }else{
+            playerValue = 2;
+        }
+        if(JumpValue[0][0] == playerValue ||
+           JumpValue[1][0] == playerValue ||
+           JumpValue[2][0] == playerValue ||
+           JumpValue[3][0] == playerValue){
+            if(JumpValue[0][1] == row && JumpValue[0][2] == column){
+                DoubleJumpPresent = true;
+                JumpingPiece[0] = JumpValue[0][1];
+                JumpingPiece[1] = JumpValue[0][2];
+            }else if(JumpValue[1][1] == row && JumpValue[1][2] == column){
+                DoubleJumpPresent = true;
+                JumpingPiece[0] = JumpValue[1][1];
+                JumpingPiece[1] = JumpValue[1][2];
+            }else if(JumpValue[2][1] == row && JumpValue[2][2] == column){
+                DoubleJumpPresent = true;
+                JumpingPiece[0] = JumpValue[2][1];
+                JumpingPiece[1] = JumpValue[2][2];
+            }else if(JumpValue[3][1] == row && JumpValue[3][2] == column){
+                DoubleJumpPresent = true;
+                JumpingPiece[0] = JumpValue[3][1];
+                JumpingPiece[1] = JumpValue[3][2];
+            }else{
+                DoubleJumpPresent = false;
+            }
+            if(DoubleJumpPresent){
+                System.out.println("The piece you moved, " + JumpingPiece[0] +
+                        " " + JumpingPiece[1] + " has to make another jump");
+                System.out.println("Select row and column to move piece to");
+                RowChange = stdin.nextInt();
+                ColumnChange = stdin.nextInt();
+                IsValidMove = CheckMoveValid(cb, FirstPlayerTurn);
+                while(IsValidMove == false){
+                    System.out.println("Invalid Move try again");
+                    IsValidMove = CheckMoveValid(cb, FirstPlayerTurn);
+                }
+                return true;
+            }
+        }
+    }
     return false;
 }
 
@@ -195,8 +254,7 @@ public static int[][] CheckPreJump(int[][] cb, boolean FirstPlayerTurn){
     return JumpValue;
 }
 
-public static boolean CheckMoveValid(int[][] cb, int row, int column,
-        int RowChange, int ColumnChange, boolean FirstPlayerTurn){
+public static boolean CheckMoveValid(int[][] cb, boolean FirstPlayerTurn){
     boolean MustJumpLeft, MustJumpRight;
     int PieceColor, LeftSecondPieceColor, RightSecondPieceColor, RowDifference;
     
@@ -294,8 +352,7 @@ public static boolean CheckMoveValid(int[][] cb, int row, int column,
     return true;
 }
 
-public static int[][] MovePiece(int[][] cb, int row, int column, int RowChange,
-        int ColumnChange, boolean FirstPlayerTurn){
+public static int[][] MovePiece(int[][] cb, boolean FirstPlayerTurn){
     
     cb[RowChange][ColumnChange] = cb[row][column];
     cb[row][column] = 9000001;
@@ -319,8 +376,7 @@ public static int[][] MovePiece(int[][] cb, int row, int column, int RowChange,
 
 public static int[][] StartMovingPiece(int[][] cb, boolean FirstPlayerTurn,
         int[][] JumpValue){
-    int row, column, RowChange, ColumnChange;
-    boolean IsValidMove, MovingPiece, JumpRequired;
+    boolean IsValidMove, MovingPiece;
     
     if(FirstPlayerTurn){
         System.out.println("Player one make your move");
@@ -367,12 +423,10 @@ public static int[][] StartMovingPiece(int[][] cb, boolean FirstPlayerTurn,
                     + "piece to. row first then column.");
             RowChange = stdin.nextInt();
             ColumnChange = stdin.nextInt();
-                 IsValidMove = CheckMoveValid(cb, row, column, RowChange, 
-                 ColumnChange, FirstPlayerTurn);
+                 IsValidMove = CheckMoveValid(cb, FirstPlayerTurn);
         
             if(IsValidMove){
-                cb = MovePiece(cb, row, column, RowChange, ColumnChange,
-                       FirstPlayerTurn);
+                cb = MovePiece(cb, FirstPlayerTurn);
                 MovingPiece = false;
             }else{
                 System.out.println("Invalid move try again");
