@@ -18,9 +18,9 @@ import javafx.scene.shape.*;
 public class Checkedmemes extends Application {
 
 static Scanner stdin = new Scanner(System.in);
-    private static final int BOARD_SIZE  =  8 ;
-    private static final int SQUARE_SIZE = 50 ;
-    private static final int NUM_PIECES  = 12 ;
+    private static final int BOARD_SIZE  =  8;
+    private static final int SQUARE_SIZE = 50;
+    private static final int NUM_PIECES  = 12;
 
     @Override
 public void start(Stage primaryStage){
@@ -313,7 +313,7 @@ public static int[][] StartMovingPiece(int[][] cb, boolean FirstPlayerTurn,
     
     while(MovingPiece){
         System.out.println("Select row and column of piece you want to move."
-                + " row first then column.");
+                         + " row first then column.");
         row = stdin.nextInt();
         column = stdin.nextInt();
     
@@ -341,7 +341,7 @@ public static int[][] StartMovingPiece(int[][] cb, boolean FirstPlayerTurn,
         }
         
         System.out.println("Select row and column of space you want to move "
-                + "piece to. row first then column.");
+                         + "piece to. row first then column.");
         RowChange = stdin.nextInt();
         ColumnChange = stdin.nextInt();
     
