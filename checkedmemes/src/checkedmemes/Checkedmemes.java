@@ -303,7 +303,7 @@ public static int[][] StartMovingPiece(int[][] cb, boolean FirstPlayerTurn,
     while(MovingPiece){
         System.out.println("Select row and column of piece you want to move."
                          + " row first then column.");
-        row = stdin.nextInt();
+        row    = stdin.nextInt();
         column = stdin.nextInt();
     
         if((JumpValue[0][0] == 1 &&  FirstPlayerTurn) || 
@@ -324,7 +324,7 @@ public static int[][] StartMovingPiece(int[][] cb, boolean FirstPlayerTurn,
                 }
                 System.out.println("Select row and column of a piece that has"
                                  + "to make a jump");
-                row = stdin.nextInt();
+                row    = stdin.nextInt();
                 column = stdin.nextInt();
             }
         }
@@ -373,7 +373,7 @@ public static void PrintOut(int[][] cb){
             if(a < 10){
                 val1 =  cb[a][b] % 10; //checking movable spaces
                 val2 = (cb[a][b] % 100 - val1) / 10; //checking colors
-                val3 = cb[a][b] / 1000000;
+                val3 =  cb[a][b] / 1000000;
             }else{
                 //a = 0;
                 b = 0;
