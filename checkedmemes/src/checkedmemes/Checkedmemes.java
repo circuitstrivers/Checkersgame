@@ -55,7 +55,7 @@ private void addPiecesToBoard(GridPane checkerBoard, Circle[] redPieces,
             (2 * i / BOARD_SIZE) % 2, 
             BOARD_SIZE - 1 - (i * 2) / BOARD_SIZE);
 
-        blackPieces[i] = new Circle(SQUARE_SIZE/2 - 4, Color.BLACK);
+        blackPieces[i] = new Circle(SQUARE_SIZE / 2 - 4, Color.BLACK);
         blackPieces[i].setStroke(Color.RED);
         checkerBoard.add(blackPieces[i], i % (BOARD_SIZE/2) * 2 + 
             (1 + 2 * i / BOARD_SIZE) % 2,
