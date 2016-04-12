@@ -451,8 +451,13 @@ public static int[][] StartMovingPiece(int[][] cb, boolean FirstPlayerTurn,
 
 public static boolean CheckForEndGame(int[][]cb, boolean FirstPlayerTurn){
     boolean RedLeft, BlackLeft;
+    int RedAmntLeft, BlackAmntLeft;
+    BlackAmntLeft = 0;
+    RedAmntLeft = 0;
     BlackLeft = false;
     RedLeft = false;
+    
+    //check if only one color is left on board
     for(int x = 1, y = 1; x < 8; y++){
         if(y == 9){
             y = 1;
@@ -481,6 +486,22 @@ public static boolean CheckForEndGame(int[][]cb, boolean FirstPlayerTurn){
         return true;
     }
     
+    //checks how many pieces of each color are left
+    for(int x = 1, y = 1; x < 8; y++){
+        if(y ==9){
+            y = 1;
+        }
+            if(cb[x][y] % 100 / 10 == 1){
+                RedAmntLeft = RedAmntLeft + 1;
+            }else if(cb[x][y] % 100 / 10 == 2){
+                BlackAmntLeft = BlackAmntLeft + 1;
+            }
+        if(y == 8){
+            x = x + 1;
+        }
+    }
+    
+    //check if any pieces can still move
     for(int x = 1, y = 1; x < 8; y++){
         if(y == 9){
             y = 1;
@@ -488,14 +509,24 @@ public static boolean CheckForEndGame(int[][]cb, boolean FirstPlayerTurn){
             if(FirstPlayerTurn){
                 if(cb[x][y] % 100 / 10 == 2){
                     if(cb[x][y] % 1000 / 100 == 1){
-                        return !((cb[x - 1][y - 1] % 100 == 1 ||
-                                  cb[x - 1][y + 1] % 100 == 1)||
-                                 (cb[x + 1][y - 1] % 100 == 1 ||
-                                  cb[x + 1][y + 1] % 100 == 1)||
-                                 (cb[x - 2][y - 2] % 100 == 1 ||
-                                  cb[x - 2][y + 2] % 100 == 1)||
-                                 (cb[x + 2][y - 2] % 100 == 1 ||
-                                  cb[x + 2][y + 2] % 100 == 1));
+                        if((cb[x - 1][y - 1] % 100 == 1 ||
+                            cb[x - 1][y + 1] % 100 == 1)||
+                           (cb[x + 1][y - 1] % 100 == 1 ||
+                            cb[x + 1][y + 1] % 100 == 1)||
+                           (cb[x - 2][y - 2] % 100 == 1 ||
+                            cb[x - 2][y + 2] % 100 == 1)||
+                           (cb[x + 2][y - 2] % 100 == 1 ||
+                            cb[x + 2][y + 2] % 100 == 1)){
+                            if(RedAmntLeft > BlackAmntLeft){
+                                System.out.println("Stalemate");
+                                System.out.println("Red has more pieces");
+                                return true;
+                            }else if(BlackAmntLeft > RedAmntLeft){
+                                System.out.println("Stalemate");
+                                System.out.println("Black has more pieces");
+                                return true;
+                            }
+                        }
                     }else{
                         return !((cb[x - 1][y - 1] % 100 == 1 ||
                                   cb[x - 1][y + 1] % 100 == 1)||
@@ -506,14 +537,24 @@ public static boolean CheckForEndGame(int[][]cb, boolean FirstPlayerTurn){
             }else{
                 if(cb[x][y] % 100 / 10 == 1){
                     if(cb[x][y] % 1000 / 100 == 1){
-                        return !((cb[x - 1][y - 1] % 100 == 1 ||
-                                  cb[x - 1][y + 1] % 100 == 1)||
-                                 (cb[x + 1][y - 1] % 100 == 1 ||
-                                  cb[x + 1][y + 1] % 100 == 1)||
-                                 (cb[x - 2][y - 2] % 100 == 1 ||
-                                  cb[x - 2][y + 2] % 100 == 1)||
-                                 (cb[x + 2][y - 2] % 100 == 1 ||
-                                  cb[x + 2][y + 2] % 100 == 1));
+                        if((cb[x - 1][y - 1] % 100 == 1 ||
+                            cb[x - 1][y + 1] % 100 == 1)||
+                           (cb[x + 1][y - 1] % 100 == 1 ||
+                            cb[x + 1][y + 1] % 100 == 1)||
+                           (cb[x - 2][y - 2] % 100 == 1 ||
+                            cb[x - 2][y + 2] % 100 == 1)||
+                           (cb[x + 2][y - 2] % 100 == 1 ||
+                            cb[x + 2][y + 2] % 100 == 1)){
+                            if(RedAmntLeft > BlackAmntLeft){
+                                System.out.println("Stalemate");
+                                System.out.println("Red has more pieces");
+                                return true;
+                            }else if(BlackAmntLeft > RedAmntLeft){
+                                System.out.println("Stalemate");
+                                System.out.println("Black has more pieces");
+                                return true;
+                            }
+                        }
                     }else{
                         return !((cb[x + 1][y - 1] % 100 == 1 ||
                                   cb[x + 1][y + 1] % 100 == 1)||
