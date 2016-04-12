@@ -91,7 +91,7 @@ public static void main(String[] args) {
     int[][] cb = {{48000000, 49000000, 50000000, 51000000, 52000000, 53000000, 54000000, 55000000, 56000000, 48000000},
                   {49000000,  9000000,  9200001,  9000000,  9200001,  9000000,  9200001,  9000000,  9200001, 49000000},  //Row 1
                   {50000000,  9000001,  9000000,  9000001,  9000000,  9000001,  9000000,  9000001,  9000000, 50000000},  //Row 2
-                  {51000000,  9000000,  9000001,  9000000,  9000011,  9000000,  9000011,  9000000,  9000001, 51000000},  //Row 3
+                  {51000000,  9000000,  9000001,  9000000,  9000011,  9000000,  9000001,  9000000,  9000001, 51000000},  //Row 3
                   {52000000,  9000001,  9000000,  9000001,  9000000,  9000001,  9000000,  9000001,  9000000, 52000000},  //Row 4
                   {53000000,  9000000,  9000001,  9000000,  9000011,  9000000,  9000001,  9000000,  9000001, 53000000},  //Row 5
                   {54000000,  9000001,  9000000,  9000021,  9000000,  9000001,  9000000,  9000001,  9000000, 54000000},  //Row 6
@@ -113,7 +113,7 @@ public static void main(String[] args) {
         cb = StartMovingPiece(cb, FirstPlayerTurn, JumpValue);
         if(cb[0][0] != 999) PrintOut(cb);
         while(CheckingDoubleJump && !GameOver){
-//            GameOver = CheckForEndGame(cb);
+            GameOver = CheckForEndGame(cb, FirstPlayerTurn);
             if(!GameOver){
                 if(cb[0][0] != 999){
                     CheckingDoubleJump = CheckDoubleJump(cb, FirstPlayerTurn, JumpValue);
@@ -125,12 +125,11 @@ public static void main(String[] args) {
                 }
             }
         }
+        FirstPlayerTurn = !FirstPlayerTurn;
         if(cb[0][0] == 999 || GameOver){
             cb[0][0] = 48000000;
             RunGame = false;
-        }else{
-            FirstPlayerTurn = !FirstPlayerTurn;
-        }    
+        }
     }
     if(RunGame == false){
         System.out.println("Exiting Game");
@@ -447,13 +446,13 @@ public static int[][] StartMovingPiece(int[][] cb, boolean FirstPlayerTurn,
     return cb;
 }
 
-/*public static boolean CheckForEndGame(int[][]cb){
+public static boolean CheckForEndGame(int[][]cb, boolean FirstPlayerTurn){
     boolean RedLeft, BlackLeft;
     BlackLeft = false;
     RedLeft = false;
-    for(int x = 1, y = 1; x < 9; y++){
+    for(int x = 1, y = 1; x < 8; y++){
         if(y == 9){
-            x = x + 1;
+            y = 1;
         }
         
         if(!RedLeft){
@@ -466,11 +465,68 @@ public static int[][] StartMovingPiece(int[][] cb, boolean FirstPlayerTurn,
                 BlackLeft = true;
             }
         }
-        
+        if(y == 8){
+            x = x + 1;
+        }
     }
+    if(RedLeft && !BlackLeft){
+        System.out.println("Red Wins");
+        return true;
+    }
+    if(BlackLeft && !RedLeft){
+        System.out.println("Black Wins");
+        return true;
+    }
+    
+    for(int x = 1, y = 1; x < 8; y++){
+        if(y == 9){
+            y = 1;
+        }
+            if(FirstPlayerTurn){
+                if(cb[x][y] % 100 / 10 == 2){
+                    if(cb[x][y] % 1000 / 100 == 1){
+                        return !((cb[x - 1][y - 1] % 100 == 1 ||
+                                  cb[x - 1][y + 1] % 100 == 1)||
+                                 (cb[x + 1][y - 1] % 100 == 1 ||
+                                  cb[x + 1][y + 1] % 100 == 1)||
+                                 (cb[x - 2][y - 2] % 100 == 1 ||
+                                  cb[x - 2][y + 2] % 100 == 1)||
+                                 (cb[x + 2][y - 2] % 100 == 1 ||
+                                  cb[x + 2][y + 2] % 100 == 1));
+                    }else{
+                        return !((cb[x - 1][y - 1] % 100 == 1 ||
+                                  cb[x - 1][y + 1] % 100 == 1)||
+                                 (cb[x - 2][y - 2] % 100 == 1 ||
+                                  cb[x - 2][y + 2] % 100 == 1));
+                    }
+                }
+            }else{
+                if(cb[x][y] % 100 / 10 == 1){
+                    if(cb[x][y] % 1000 / 100 == 1){
+                        return !((cb[x - 1][y - 1] % 100 == 1 ||
+                                  cb[x - 1][y + 1] % 100 == 1)||
+                                 (cb[x + 1][y - 1] % 100 == 1 ||
+                                  cb[x + 1][y + 1] % 100 == 1)||
+                                 (cb[x - 2][y - 2] % 100 == 1 ||
+                                  cb[x - 2][y + 2] % 100 == 1)||
+                                 (cb[x + 2][y - 2] % 100 == 1 ||
+                                  cb[x + 2][y + 2] % 100 == 1));
+                    }else{
+                        return !((cb[x + 1][y - 1] % 100 == 1 ||
+                                  cb[x + 1][y + 1] % 100 == 1)||
+                                 (cb[x + 2][y - 2] % 100 == 1 ||
+                                  cb[x + 2][y + 2] % 100 == 1));
+                    }
+                }
+            }
+        if(y == 8){
+            x = x + 1;
+        }
+    }
+    
     return false;
 }
-*/
+
 public static void PrintOut(int[][] cb){
     
     boolean PrintBoard = true;
