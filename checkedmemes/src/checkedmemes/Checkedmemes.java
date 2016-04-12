@@ -1,5 +1,7 @@
 package checkedmemes;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import javafx.application.Application;
 import javafx.geometry.*;
 import javafx.scene.*;
@@ -14,6 +16,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import java.util.Scanner;
 import javafx.scene.shape.*;
+import java.io.*;
 
 public class Checkedmemes extends Application {
 
@@ -596,4 +599,26 @@ public static void PrintOut(int[][] cb){
     }
     System.out.println(cb[1][4]);
 }
+
+/*
+public static void WriteFile(int[][] cb, boolean FirstPlayerTurn) {
+    FileWriter fstream = null;
+    try {
+        fstream = new FileWriter("board.txt", true);
+        BufferedWriter out = new BufferedWriter(fstream);
+        
+        for (int i = 0; i < NumEntries; i++) {
+        P.println(int[][] cb);
+        }
+    }
+    catch (Exception e) {
+        System.err.println("Error: " + e.getMessage());
+    }
+}
+
+public static void ReadFile(){
+    
+}
+}
+*/
 }
