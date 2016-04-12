@@ -86,14 +86,14 @@ private void configureBoardLayout(GridPane board) {
 public static void main(String[] args) {
     //Creates an array that sets up the spaces that make up the board
     int[][] cb = {{48000000, 49000000, 50000000, 51000000, 52000000, 53000000, 54000000, 55000000, 56000000, 48000000},
-  {49000000,  9000000,  9200011,  9000000,  9200011, 9000000,  9200011,  9000000,  9200011, 49000000},  //Row 1
-  {50000000,  9000011,  9000000,  9000011,  9000000, 9000011,  9000000,  9000011,  9000000, 50000000},  //Row 2
-  {51000000,  9000000,  9000011,  9000000,  9000011, 9000000,  9000011,  9000000,  9000011, 51000000},  //Row 3
+  {49000000,  9000000,  9200001,  9000000,  9200001, 9000000,  9200001,  9000000,  9200001, 49000000},  //Row 1
+  {50000000,  9000001,  9000000,  9000001,  9000000, 9000001,  9000000,  9000001,  9000000, 50000000},  //Row 2
+  {51000000,  9000000,  9000001,  9000000,  9000011, 9000000,  9000011,  9000000,  9000001, 51000000},  //Row 3
   {52000000,  9000001,  9000000,  9000001,  9000000, 9000001,  9000000,  9000001,  9000000, 52000000},  //Row 4
-  {53000000,  9000000,  9000001,  9000000,  9000001, 9000000,  9000001,  9000000,  9000001, 53000000},  //Row 5
-  {54000000,  9000021,  9000000,  9000021,  9000000, 9000021,  9000000,  9000021,  9000000, 54000000},  //Row 6
-  {55000000,  9000000,  9000021,  9000000,  9000021, 9000000,  9000021,  9000000,  9000021, 55000000},  //Row 7
-  {56000000,  9100021,  9000000,  9100021,  9000000, 9100021,  9000000,  9100021,  9000000, 56000000},  //Row 8
+  {53000000,  9000000,  9000001,  9000000,  9000011, 9000000,  9000001,  9000000,  9000001, 53000000},  //Row 5
+  {54000000,  9000001,  9000000,  9000021,  9000000, 9000001,  9000000,  9000001,  9000000, 54000000},  //Row 6
+  {55000000,  9000000,  9000001,  9000000,  9000001, 9000000,  9000001,  9000000,  9000001, 55000000},  //Row 7
+  {56000000,  9100001,  9000000,  9100001,  9000000, 9100001,  9000000,  9100001,  9000000, 56000000},  //Row 8
   {48000000, 49000000, 50000000, 51000000, 52000000, 53000000, 54000000, 55000000, 56000000, 48000000}};
     
     int[][] JumpValue;
@@ -263,9 +263,9 @@ public static boolean CheckMoveValid(int[][] cb, boolean FirstPlayerTurn){
         return false;
     }
     //checks if requested piece belongs to player
-    if((((((cb[row][column] % 1000000) - 1) / 10) == 2) 
+    if((((((cb[row][column] % 1000000) - 1) % 100 / 10) == 2) 
             && FirstPlayerTurn == false) ||
-       (((((cb[row][column] % 1000000) - 1) / 10) == 1) 
+       (((((cb[row][column] % 1000000) - 1) % 100 / 10) == 1) 
             && FirstPlayerTurn == true )) {
         System.out.println("NOT YOUR PIECE");
         return false;
@@ -285,17 +285,17 @@ public static boolean CheckMoveValid(int[][] cb, boolean FirstPlayerTurn){
     
     //checks piece color and color of any piece that may be directly 
     //ahead of piece
-    PieceColor                = (((cb[row]    [column]     % 1000000) - 1)
+    PieceColor                = (((cb[row]    [column]     % 1000000) % 100000 % 100 - 1)
             / 10);
     if(FirstPlayerTurn){
-        LeftSecondPieceColor  = (((cb[row - 1][column - 1] % 1000000) - 1)
+        LeftSecondPieceColor  = (((cb[row - 1][column - 1] % 1000000) % 100000 % 100 - 1)
             / 10);
-        RightSecondPieceColor = (((cb[row - 1][column + 1] % 1000000) - 1)
+        RightSecondPieceColor = (((cb[row - 1][column + 1] % 1000000) % 100000 % 100 - 1)
             / 10);
     }else{
-        LeftSecondPieceColor  = (((cb[row + 1][column - 1] % 1000000) - 1)
+        LeftSecondPieceColor  = (((cb[row + 1][column - 1] % 1000000) % 100000 % 100 - 1)
             / 10);
-        RightSecondPieceColor = (((cb[row + 1][column + 1] % 1000000) - 1)
+        RightSecondPieceColor = (((cb[row + 1][column + 1] % 1000000) % 100000 % 100 - 1)
             / 10);
     }   
     //checks if there is a piece ahead that must be jumped
@@ -332,11 +332,9 @@ public static boolean CheckMoveValid(int[][] cb, boolean FirstPlayerTurn){
                 }
             }
         }else if(MustJumpRight && MustJumpLeft){
-            if(!(((RowChange    == row + RowDifference && 
-                   ColumnChange == column + 2) &&
-                   cb[row + RowDifference][column + 2] % 1000000 == 1) || 
-                  (RowChange    == row + RowDifference && 
-                   ColumnChange == column - 2) &&
+            if(!(((RowChange    == row + RowDifference && ColumnChange == column + 2)
+                && cb[row + RowDifference][column + 2] % 1000000 == 1) || 
+                  (RowChange    == row + RowDifference && ColumnChange == column - 2) &&
                    cb[row + RowDifference][column - 2] % 1000000 == 1)){
                 System.out.println("Must make jump");
                 return false;
@@ -344,7 +342,7 @@ public static boolean CheckMoveValid(int[][] cb, boolean FirstPlayerTurn){
         }
     }
     //checks to see if player is trying to move onto full space
-    if(cb[RowChange][ColumnChange] != 9000001){
+    if((int)cb[RowChange][ColumnChange] % 100 / 10 != 0){
         System.out.println("Can't move on a full space");
         return false;
     }
@@ -353,9 +351,13 @@ public static boolean CheckMoveValid(int[][] cb, boolean FirstPlayerTurn){
 }
 
 public static int[][] MovePiece(int[][] cb, boolean FirstPlayerTurn){
+    if(cb[RowChange][ColumnChange] % 1000000 / 100000 == 2){
+        cb[row][column] = cb[row][column] + 100;
+    }
     
     cb[RowChange][ColumnChange] = cb[row][column];
     cb[row][column] = 9000001;
+    
     if((int)Math.abs(RowChange - row) == 2){
         if(FirstPlayerTurn){
             if(ColumnChange - column == 2){
@@ -440,13 +442,12 @@ public static void PrintOut(int[][] cb){
     
     boolean PrintBoard = true;
     int a, b;
-    int val1, val2, val3;
-    char d, val4;
+    int val1, val2, val3, val4;
+    char d, val5;
     val1 = 0;
     val2 = 0;
     val3 = 0;
     val4 = 0;
-    d    = 0;
     a    = 0;
     b    = 0;
     
@@ -461,6 +462,7 @@ public static void PrintOut(int[][] cb){
                 val1 =  cb[a][b] % 10; //checking movable spaces
                 val2 = (cb[a][b] % 100 - val1) / 10; //checking colors
                 val3 =  cb[a][b] / 1000000;
+                val4 =  cb[a][b] % 1000 / 100;
             }else{
                 //a = 0;
                 b = 0;
@@ -471,20 +473,28 @@ public static void PrintOut(int[][] cb){
         if(a < 10 && b < 11){
             if(val2 == 0 && val3 == 9){
                 if(val1 == 0){
-                    val4 = 'X';
+                    val5 = 'X';
                 }else{
-                    val4 = '_';
+                    val5 = '_';
                 }
             }else{
-                val4 = (char)val3;
+                val5 = (char)val3;
                 }
             if(val2 == 1){
-                val4 = 'r';
+                if(val4 == 0){
+                    val5 = 'r';
+                }else{
+                    val5 = 'R';
+                }
             }    
             if(val2 == 2){
-                val4 = 'b';
+                if(val4 == 0){
+                    val5 = 'b';
+                }else{
+                    val5 = 'B';
+                }
             }
-            d = val4;
+            d = val5;
             System.out.print(d + " ");
         }
         if(b <= 10 && a < 10){
@@ -494,6 +504,7 @@ public static void PrintOut(int[][] cb){
             a = 0;
             b = 0;
         }
-    }        
+    }
+    System.out.println(cb[1][4]);
 }
 }
