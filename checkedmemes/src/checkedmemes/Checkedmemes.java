@@ -38,6 +38,7 @@ public void start(Stage primaryStage){
     primaryStage.setScene(new Scene(root, 400, 400));
     primaryStage.show();
 }    
+
 private void addSquaresToBoard(GridPane board) {
     Color[] squareColors = new Color[] {Color.RED, Color.BLACK};
     for (int row = 0; row < BOARD_SIZE; row++) {
@@ -84,22 +85,24 @@ private void configureBoardLayout(GridPane board) {
 }
 
 public static void main(String[] args) {
+    Application.launch(args);
+    
     //Creates an array that sets up the spaces that make up the board
     int[][] cb = {{48000000, 49000000, 50000000, 51000000, 52000000, 53000000, 54000000, 55000000, 56000000, 48000000},
-  {49000000,  9000000,  9200001,  9000000,  9200001, 9000000,  9200001,  9000000,  9200001, 49000000},  //Row 1
-  {50000000,  9000001,  9000000,  9000001,  9000000, 9000001,  9000000,  9000001,  9000000, 50000000},  //Row 2
-  {51000000,  9000000,  9000001,  9000000,  9000011, 9000000,  9000011,  9000000,  9000001, 51000000},  //Row 3
-  {52000000,  9000001,  9000000,  9000001,  9000000, 9000001,  9000000,  9000001,  9000000, 52000000},  //Row 4
-  {53000000,  9000000,  9000001,  9000000,  9000011, 9000000,  9000001,  9000000,  9000001, 53000000},  //Row 5
-  {54000000,  9000001,  9000000,  9000021,  9000000, 9000001,  9000000,  9000001,  9000000, 54000000},  //Row 6
-  {55000000,  9000000,  9000001,  9000000,  9000001, 9000000,  9000001,  9000000,  9000001, 55000000},  //Row 7
-  {56000000,  9100001,  9000000,  9100001,  9000000, 9100001,  9000000,  9100001,  9000000, 56000000},  //Row 8
-  {48000000, 49000000, 50000000, 51000000, 52000000, 53000000, 54000000, 55000000, 56000000, 48000000}};
+                  {49000000,  9000000,  9200001,  9000000,  9200001,  9000000,  9200001,  9000000,  9200001, 49000000},  //Row 1
+                  {50000000,  9000001,  9000000,  9000001,  9000000,  9000001,  9000000,  9000001,  9000000, 50000000},  //Row 2
+                  {51000000,  9000000,  9000001,  9000000,  9000011,  9000000,  9000011,  9000000,  9000001, 51000000},  //Row 3
+                  {52000000,  9000001,  9000000,  9000001,  9000000,  9000001,  9000000,  9000001,  9000000, 52000000},  //Row 4
+                  {53000000,  9000000,  9000001,  9000000,  9000011,  9000000,  9000001,  9000000,  9000001, 53000000},  //Row 5
+                  {54000000,  9000001,  9000000,  9000021,  9000000,  9000001,  9000000,  9000001,  9000000, 54000000},  //Row 6
+                  {55000000,  9000000,  9000001,  9000000,  9000001,  9000000,  9000001,  9000000,  9000001, 55000000},  //Row 7
+                  {56000000,  9100001,  9000000,  9100001,  9000000,  9100001,  9000000,  9100001,  9000000, 56000000},  //Row 8
+                  {48000000, 49000000, 50000000, 51000000, 52000000, 53000000, 54000000, 55000000, 56000000, 48000000}};
     
     int[][] JumpValue;
     
-    boolean RunGame, FirstPlayerTurn, CheckingDoubleJump;
-    
+    boolean RunGame, FirstPlayerTurn, CheckingDoubleJump, GameOver;
+    GameOver = false;
     RunGame = true;
     FirstPlayerTurn = true;
     
@@ -109,24 +112,28 @@ public static void main(String[] args) {
         CheckingDoubleJump = true;
         cb = StartMovingPiece(cb, FirstPlayerTurn, JumpValue);
         if(cb[0][0] != 999) PrintOut(cb);
-        while(CheckingDoubleJump){
-            if(cb[0][0] != 999){
-                CheckingDoubleJump = CheckDoubleJump(cb, FirstPlayerTurn, JumpValue);
-            }else if(cb[0][0] == 999){
-                CheckingDoubleJump = false;
-            }
-            if(CheckingDoubleJump){
-                cb = MovePiece(cb, FirstPlayerTurn);
+        while(CheckingDoubleJump && !GameOver){
+//            GameOver = CheckForEndGame(cb);
+            if(!GameOver){
+                if(cb[0][0] != 999){
+                    CheckingDoubleJump = CheckDoubleJump(cb, FirstPlayerTurn, JumpValue);
+                }else if(cb[0][0] == 999){
+                    CheckingDoubleJump = false;
+                }
+                if(CheckingDoubleJump){
+                    cb = MovePiece(cb, FirstPlayerTurn);
+                }
             }
         }
-        
-        if(cb[0][0] == 999){
+        if(cb[0][0] == 999 || GameOver){
+            cb[0][0] = 48000000;
             RunGame = false;
         }else{
             FirstPlayerTurn = !FirstPlayerTurn;
         }    
     }
     if(RunGame == false){
+        System.out.println("Exiting Game");
         System.exit(0);
     }
 }
@@ -398,6 +405,7 @@ public static int[][] StartMovingPiece(int[][] cb, boolean FirstPlayerTurn,
         }else{
             column = stdin.nextInt();
 
+            if(cb[row][column] % 1000 / 100 != 1){
             if((JumpValue[0][0] == 1 &&  FirstPlayerTurn) || 
                (JumpValue[0][0] == 2 && !FirstPlayerTurn)) {
                 while((row != JumpValue[0][1] || column != JumpValue[0][2]) &&
@@ -420,7 +428,7 @@ public static int[][] StartMovingPiece(int[][] cb, boolean FirstPlayerTurn,
                     column = stdin.nextInt();
                 }
             }
-       
+            }
             System.out.println("Select row and column of space you want to move "
                     + "piece to. row first then column.");
             RowChange = stdin.nextInt();
@@ -438,6 +446,31 @@ public static int[][] StartMovingPiece(int[][] cb, boolean FirstPlayerTurn,
     }
     return cb;
 }
+
+/*public static boolean CheckForEndGame(int[][]cb){
+    boolean RedLeft, BlackLeft;
+    BlackLeft = false;
+    RedLeft = false;
+    for(int x = 1, y = 1; x < 9; y++){
+        if(y == 9){
+            x = x + 1;
+        }
+        
+        if(!RedLeft){
+            if(cb[x][y] % 100 / 10 == 1){
+                RedLeft = true;
+            }
+        }
+        if(!BlackLeft){
+            if(cb[x][y] % 100 / 10 == 2){
+                BlackLeft = true;
+            }
+        }
+        
+    }
+    return false;
+}
+*/
 public static void PrintOut(int[][] cb){
     
     boolean PrintBoard = true;
