@@ -22,6 +22,7 @@ import java.io.PrintStream;
 
 public class Checkedmemes extends Application {
 
+static Scanner fileReader;
 static int row, column, RowChange, ColumnChange;
     
 static Scanner stdin = new Scanner(System.in);
@@ -89,8 +90,9 @@ private void configureBoardLayout(GridPane board) {
     }
 }
 
-public static void main(String[] args) {
+public static void main(String[] args) throws Exception {
     Application.launch(args);
+    final String File = "Filename.txt";
     
     //Creates an array that sets up the spaces that make up the board
     int[][] cb = {{48000000, 49000000, 50000000, 51000000, 52000000, 53000000, 54000000, 55000000, 56000000, 48000000},
@@ -643,24 +645,51 @@ public static void PrintOut(int[][] cb){
     System.out.println(cb[1][4]);
 }
 
-/*
-public static void WriteFile(int[][] cb, boolean FirstPlayerTurn) {
-    FileWriter fstream = null;
+public static void WriteFile(int[][] cb, String File, boolean FirstPlayerTurn) throws Exception {
+    PrintStream Print;
+    Print = new PrintStream(File);
+    
+    String boardValue;
+    
     try {
-        fstream = new FileWriter("board.txt", true);
-        BufferedWriter out = new BufferedWriter(fstream);
-        
-        for (int i = 0; i < NumEntries; i++) {
-        P.println(int[][] cb);
+        for (int x = 1, y = 1; x < 8; y++) {
+            if (y == 9) {
+                y = 1;
+            }
+            boardValue = Integer.toString(cb[x][y]);
+            Print.print(boardValue + "\t");
+            if (y == 8) {
+                Print.print("\n");
+                x = x + 1;
+            }
         }
+        
+        Print.close();
     }
     catch (Exception e) {
         System.err.println("Error: " + e.getMessage());
     }
 }
 
-public static void ReadFile(){
+public static int ReadFile(String File) throws Exception {
+    int i;
     
+    i = 0;
+    try {
+        fileReader = new Scanner(new File(File));
+        fileReader.useDelimiter("\t|\n");
+        
+        while (fileReader.hasNext()) {
+                entryList[i] = new Entry();
+                entryList[i].name   = fileReader.next();
+                entryList[i].number = fileReader.next();
+                entryList[i].notes  = fileReader.next();
+                i = i + 1;
+            }
+        }
+    catch (Exception NoSuchElementException) {
+    }
+    return i;
 }
-*/
+
 }
