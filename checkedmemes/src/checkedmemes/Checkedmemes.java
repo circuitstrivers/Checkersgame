@@ -17,6 +17,8 @@ import javafx.stage.Stage;
 import java.util.Scanner;
 import javafx.scene.shape.*;
 import java.io.*;
+import java.io.File;
+import java.io.PrintStream;
 
 public class Checkedmemes extends Application {
 
