@@ -680,10 +680,6 @@ public static int ReadFile(String File) throws Exception {
         fileReader.useDelimiter("\t|\n");
         
         while (fileReader.hasNext()) {
-                entryList[i] = new Entry();
-                entryList[i].name   = fileReader.next();
-                entryList[i].number = fileReader.next();
-                entryList[i].notes  = fileReader.next();
                 i = i + 1;
             }
         }
