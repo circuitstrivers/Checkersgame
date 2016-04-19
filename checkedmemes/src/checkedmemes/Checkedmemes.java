@@ -19,6 +19,8 @@ import javafx.scene.shape.*;
 import java.io.*;
 import java.io.File;
 import java.io.PrintStream;
+import javax.swing.JOptionPane;
+import javax.swing.JFrame;
 
 public class Checkedmemes extends Application {
 
@@ -91,6 +93,7 @@ private void configureBoardLayout(GridPane board) {
 }
 
 public static void main(String[] args) throws Exception {
+    JFrame frame = new JFrame();
     Application.launch(args);
     
     String File = null;
@@ -100,11 +103,11 @@ public static void main(String[] args) throws Exception {
     RunGame = true;
     FirstPlayerTurn = true;
     
-    System.out.println("New Game(1)\nLoad Game(2)");
-    screenSelection = stdin.nextInt();
+    String selectGame = JOptionPane.showInputDialog(null, "New Game(1)\nLoad Game(2)");
+    screenSelection = Integer.parseInt(selectGame);
     while(screenSelection != 1 && screenSelection != 2){
-        System.out.println("Invalid selection. enter again");
-        screenSelection = stdin.nextInt();
+        selectGame = JOptionPane.showInputDialog(null, "Invalid selection. enter again");
+        screenSelection = Integer.parseInt(selectGame);
     }
     
     loading = (screenSelection == 2);
@@ -120,9 +123,7 @@ public static void main(String[] args) throws Exception {
                       {56000000,  9100001,  9000000,  9100001,  9000000,  9100001,  9000000,  9100001,  9000000, 56000000},  //Row 8
                       {48000000, 49000000, 50000000, 51000000, 52000000, 53000000, 54000000, 55000000, 56000000, 48000000}};
     }else{
-        System.out.println("Enter name of file you want to load");
-        stdin.nextLine();
-        File = stdin.nextLine();
+        File = JOptionPane.showInputDialog(null, "Enter name of file you want to load");
         int[][]cb = ReadFile(File);
         FirstPlayerTurn = (cb[11][10] == 1);
     }
@@ -154,15 +155,13 @@ public static void main(String[] args) throws Exception {
         }
     }
     if(RunGame == false){
-        System.out.println("Would you like to save? yes(1) no(0)");
-        saving = stdin.nextInt();
+        String selectSave = JOptionPane.showInputDialog(null, "Would you like to save? yes(1) no(0)");
+        saving = Integer.parseInt(selectSave);
         if(saving == 1){
-            System.out.println("Enter the name of your save.");
-            stdin.nextLine();
-            File = stdin.nextLine();
+            File = JOptionPane.showInputDialog(null, "Enter the name of your save.");
             WriteFile(cb, File, FirstPlayerTurn);
         }
-        System.out.println("Exiting Game");
+        JOptionPane.showMessageDialog(null, "Exiting Game");
         System.exit(0);
     }
 }
@@ -220,14 +219,14 @@ public static boolean CheckDoubleJump(int[][] cb, boolean FirstPlayerTurn,
                 DoubleJumpPresent = false;
             }
             if(DoubleJumpPresent){
-                System.out.println("The piece you moved, " + JumpingPiece[0] +
+                JOptionPane.showMessageDialog(null, "The piece you moved, " + JumpingPiece[0] +
                         " " + JumpingPiece[1] + " has to make another jump");
                 System.out.println("Select row and column to move piece to");
                 RowChange = stdin.nextInt();
                 ColumnChange = stdin.nextInt();
                 IsValidMove = CheckMoveValid(cb, FirstPlayerTurn);
                 while(IsValidMove == false){
-                    System.out.println("Invalid Move try again");
+                    JOptionPane.showMessageDialog(null, "Invalid Move try again", "Alert", JOptionPane.ERROR_MESSAGE);
                     IsValidMove = CheckMoveValid(cb, FirstPlayerTurn);
                 }
                 return true;
@@ -303,18 +302,18 @@ public static boolean CheckMoveValid(int[][] cb, boolean FirstPlayerTurn){
             && FirstPlayerTurn == false) ||
        (((((cb[row][column] % 1000000) - 1) % 100 / 10) == 1) 
             && FirstPlayerTurn == true )) {
-        System.out.println("NOT YOUR PIECE");
+        JOptionPane.showMessageDialog(null, "NOT YOUR PIECE", "Alert", JOptionPane.ERROR_MESSAGE);
         return false;
     }
     //checks to make sure piece isnt moving backwards
     if(FirstPlayerTurn){
         if(RowChange >= row){
-            System.out.println("Can't move backwards");
+            JOptionPane.showMessageDialog(null, "Can't move backwards", "Alert", JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }else{
         if(RowChange <= row){
-            System.out.println("Can't move backwards");
+            JOptionPane.showMessageDialog(null, "Can't move backwards", "Alert", JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }
@@ -347,7 +346,7 @@ public static boolean CheckMoveValid(int[][] cb, boolean FirstPlayerTurn){
     }
     if((MustJumpRight == false) && (MustJumpLeft == false)){
         if(ColumnChange == column || Math.abs(ColumnChange - column) > 1){
-            System.out.println("Can't move there");
+            JOptionPane.showMessageDialog(null, "Can't move there", "Alert", JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }else{
@@ -355,7 +354,7 @@ public static boolean CheckMoveValid(int[][] cb, boolean FirstPlayerTurn){
             if(!(RowChange == row + RowDifference && 
                     ColumnChange == column + 2)){
                 if(cb[row + RowDifference][column + 2] % 1000000 == 1){
-                    System.out.println("Must jump right");
+                    JOptionPane.showMessageDialog(null, "Must jump right", "Alert", JOptionPane.ERROR_MESSAGE);
                     return false;
                 }
             }
@@ -363,7 +362,7 @@ public static boolean CheckMoveValid(int[][] cb, boolean FirstPlayerTurn){
             if(!(RowChange == row + RowDifference && 
                     ColumnChange == column - 2)){
                 if(cb[row + RowDifference][column - 2] % 1000000 == 1){
-                    System.out.println("Must jump left");
+                    JOptionPane.showMessageDialog(null, "Must jump left", "Alert", JOptionPane.ERROR_MESSAGE);
                     return false;
                 }
             }
@@ -372,14 +371,14 @@ public static boolean CheckMoveValid(int[][] cb, boolean FirstPlayerTurn){
                 && cb[row + RowDifference][column + 2] % 1000000 == 1) || 
                   (RowChange    == row + RowDifference && ColumnChange == column - 2) &&
                    cb[row + RowDifference][column - 2] % 1000000 == 1)){
-                System.out.println("Must make jump");
+                JOptionPane.showMessageDialog(null, "Must make jump", "Alert", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
         }
     }
     //checks to see if player is trying to move onto full space
     if((int)cb[RowChange][ColumnChange] % 100 / 10 != 0){
-        System.out.println("Can't move on a full space");
+        JOptionPane.showMessageDialog(null, "Can't move on a full space", "Alert", JOptionPane.ERROR_MESSAGE);
         return false;
     }
     //move is valid
@@ -417,9 +416,9 @@ public static int[][] StartMovingPiece(int[][] cb, boolean FirstPlayerTurn,
     boolean IsValidMove, MovingPiece;
     
     if(FirstPlayerTurn){
-        System.out.println("Player one make your move");
+        JOptionPane.showMessageDialog(null, "Player one make your move");
     }else{
-        System.out.println("Player two make your move");
+        JOptionPane.showMessageDialog(null, "Player two make your move");
     }
     MovingPiece = true;
 
@@ -468,7 +467,7 @@ public static int[][] StartMovingPiece(int[][] cb, boolean FirstPlayerTurn,
                 cb = MovePiece(cb, FirstPlayerTurn);
                 MovingPiece = false;
             }else{
-                System.out.println("Invalid move try again");
+                JOptionPane.showMessageDialog(null, "Invalide move, try again", "Alert", JOptionPane.ERROR_MESSAGE);
                 MovingPiece = true;
             }
         }
@@ -505,11 +504,11 @@ public static boolean CheckForEndGame(int[][]cb, boolean FirstPlayerTurn){
         }
     }
     if(RedLeft && !BlackLeft){
-        System.out.println("Red Wins");
+        JOptionPane.showMessageDialog(null, "Red Wins");
         return true;
     }
     if(BlackLeft && !RedLeft){
-        System.out.println("Black Wins");
+        JOptionPane.showMessageDialog(null, "Black Wins");
         return true;
     }
     
@@ -545,12 +544,10 @@ public static boolean CheckForEndGame(int[][]cb, boolean FirstPlayerTurn){
                            (cb[x + 2][y - 2] % 100 == 1 ||
                             cb[x + 2][y + 2] % 100 == 1)){
                             if(RedAmntLeft > BlackAmntLeft){
-                                System.out.println("Stalemate");
-                                System.out.println("Red has more pieces");
+                                JOptionPane.showMessageDialog(null, "Stalemate. Red has more pieces");
                                 return true;
                             }else if(BlackAmntLeft > RedAmntLeft){
-                                System.out.println("Stalemate");
-                                System.out.println("Black has more pieces");
+                                JOptionPane.showMessageDialog(null, "Stalemate. Black has more pieces");
                                 return true;
                             }
                         }
@@ -573,12 +570,10 @@ public static boolean CheckForEndGame(int[][]cb, boolean FirstPlayerTurn){
                            (cb[x + 2][y - 2] % 100 == 1 ||
                             cb[x + 2][y + 2] % 100 == 1)){
                             if(RedAmntLeft > BlackAmntLeft){
-                                System.out.println("Stalemate");
-                                System.out.println("Red has more pieces");
+                                JOptionPane.showMessageDialog(null, "Stalemate. Red has more pieces");
                                 return true;
                             }else if(BlackAmntLeft > RedAmntLeft){
-                                System.out.println("Stalemate");
-                                System.out.println("Black has more pieces");
+                                JOptionPane.showMessageDialog(null, "Stalemate. Black has more pieces");
                                 return true;
                             }
                         }
