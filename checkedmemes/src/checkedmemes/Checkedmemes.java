@@ -645,9 +645,9 @@ public static void PrintOut(int[][] cb){
     System.out.println(cb[1][4]);
 }
 
-public static void WriteFile(int[][] cb, String File, boolean FirstPlayerTurn) throws Exception {
+public static void WriteFile(int[][] cb, String BoardFile, boolean FirstPlayerTurn) throws Exception {
     PrintStream Print;
-    Print = new PrintStream(File);
+    Print = new PrintStream(BoardFile);
     
     String boardValue;
     
@@ -671,21 +671,21 @@ public static void WriteFile(int[][] cb, String File, boolean FirstPlayerTurn) t
     }
 }
 
-public static int ReadFile(String File) throws Exception {
+public static int ReadFile(String BoardFile) throws Exception {
     int i;
     
     i = 0;
     try {
-        fileReader = new Scanner(new File(File));
+        fileReader = new Scanner(new File(BoardFile));
         fileReader.useDelimiter("\t|\n");
         
         while (fileReader.hasNext()) {
-                i = i + 1;
+            
+            i = i + 1;
             }
         }
     catch (Exception NoSuchElementException) {
     }
     return i;
 }
-
 }
