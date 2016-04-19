@@ -92,27 +92,42 @@ private void configureBoardLayout(GridPane board) {
 
 public static void main(String[] args) throws Exception {
     Application.launch(args);
-    final String File = "Filename.txt";
     
-    //Creates an array that sets up the spaces that make up the board
-    int[][] cb = {{48000000, 49000000, 50000000, 51000000, 52000000, 53000000, 54000000, 55000000, 56000000, 48000000},
-                  {49000000,  9000000,  9200001,  9000000,  9200001,  9000000,  9200001,  9000000,  9200001, 49000000},  //Row 1
-                  {50000000,  9000001,  9000000,  9000001,  9000000,  9000001,  9000000,  9000001,  9000000, 50000000},  //Row 2
-                  {51000000,  9000000,  9000001,  9000000,  9000011,  9000000,  9000001,  9000000,  9000001, 51000000},  //Row 3
-                  {52000000,  9000001,  9000000,  9000001,  9000000,  9000001,  9000000,  9000001,  9000000, 52000000},  //Row 4
-                  {53000000,  9000000,  9000001,  9000000,  9000011,  9000000,  9000001,  9000000,  9000001, 53000000},  //Row 5
-                  {54000000,  9000001,  9000000,  9000021,  9000000,  9000001,  9000000,  9000001,  9000000, 54000000},  //Row 6
-                  {55000000,  9000000,  9000001,  9000000,  9000001,  9000000,  9000001,  9000000,  9000001, 55000000},  //Row 7
-                  {56000000,  9100001,  9000000,  9100001,  9000000,  9100001,  9000000,  9100001,  9000000, 56000000},  //Row 8
-                  {48000000, 49000000, 50000000, 51000000, 52000000, 53000000, 54000000, 55000000, 56000000, 48000000}};
-    
-    int[][] JumpValue;
-    
-    boolean RunGame, FirstPlayerTurn, CheckingDoubleJump, GameOver;
+    String File = null;
+    int saving, screenSelection;
+    boolean RunGame, FirstPlayerTurn, CheckingDoubleJump, GameOver, loading;
     GameOver = false;
     RunGame = true;
     FirstPlayerTurn = true;
     
+    System.out.println("New Game(1)\nLoad Game(2)");
+    screenSelection = stdin.nextInt();
+    while(screenSelection != 1 && screenSelection != 2){
+        System.out.println("Invalid selection. enter again");
+        screenSelection = stdin.nextInt();
+    }
+    
+    loading = (screenSelection == 2);
+    if(loading == false){
+        int[][] cb = {{48000000, 49000000, 50000000, 51000000, 52000000, 53000000, 54000000, 55000000, 56000000, 48000000},
+                      {49000000,  9000000,  9200001,  9000000,  9200001,  9000000,  9200001,  9000000,  9200001, 49000000},  //Row 1
+                      {50000000,  9000001,  9000000,  9000001,  9000000,  9000001,  9000000,  9000001,  9000000, 50000000},  //Row 2
+                      {51000000,  9000000,  9000001,  9000000,  9000011,  9000000,  9000001,  9000000,  9000001, 51000000},  //Row 3
+                      {52000000,  9000001,  9000000,  9000001,  9000000,  9000001,  9000000,  9000001,  9000000, 52000000},  //Row 4
+                      {53000000,  9000000,  9000001,  9000000,  9000011,  9000000,  9000001,  9000000,  9000001, 53000000},  //Row 5
+                      {54000000,  9000001,  9000000,  9000021,  9000000,  9000001,  9000000,  9000001,  9000000, 54000000},  //Row 6
+                      {55000000,  9000000,  9000001,  9000000,  9000001,  9000000,  9000001,  9000000,  9000001, 55000000},  //Row 7
+                      {56000000,  9100001,  9000000,  9100001,  9000000,  9100001,  9000000,  9100001,  9000000, 56000000},  //Row 8
+                      {48000000, 49000000, 50000000, 51000000, 52000000, 53000000, 54000000, 55000000, 56000000, 48000000}};
+    }else{
+        System.out.println("Enter name of file you want to load");
+        stdin.nextLine();
+        File = stdin.nextLine();
+        int[][]cb = ReadFile(File);
+        FirstPlayerTurn = (cb[11][10] == 1);
+    }
+    int[][] JumpValue;
+
     while(RunGame){
         PrintOut(cb);
         JumpValue = CheckPreJump(cb, FirstPlayerTurn); 
@@ -139,6 +154,14 @@ public static void main(String[] args) throws Exception {
         }
     }
     if(RunGame == false){
+        System.out.println("Would you like to save? yes(1) no(0)");
+        saving = stdin.nextInt();
+        if(saving == 1){
+            System.out.println("Enter the name of your save.");
+            stdin.nextLine();
+            File = stdin.nextLine();
+            WriteFile(cb, File, FirstPlayerTurn);
+        }
         System.out.println("Exiting Game");
         System.exit(0);
     }
@@ -664,6 +687,8 @@ public static void WriteFile(int[][] cb, String BoardFile, boolean FirstPlayerTu
             }
         }
         
+        Print.print(FirstPlayerTurn);
+        
         Print.close();
     }
     catch (Exception e) {
@@ -671,10 +696,22 @@ public static void WriteFile(int[][] cb, String BoardFile, boolean FirstPlayerTu
     }
 }
 
-public static int ReadFile(String BoardFile) throws Exception {
+public static int[][] ReadFile(String File) throws Exception {
+    int [][] cb;
+    cb = new int[11][10];
     int i;
-    
     i = 0;
+    
+    for(int n = 48, x = 0, y = 0; x < 11; y++){
+        if(y == 11){
+            y = 0;
+        }
+        
+        if(y == 10){
+            x = x + 1;
+        }
+    }
+    
     try {
         fileReader = new Scanner(new File(BoardFile));
         fileReader.useDelimiter("\t|\n");
@@ -686,6 +723,6 @@ public static int ReadFile(String BoardFile) throws Exception {
         }
     catch (Exception NoSuchElementException) {
     }
-    return i;
+    return cb;
 }
 }
