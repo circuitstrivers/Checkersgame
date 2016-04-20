@@ -118,7 +118,7 @@ public class Checkedmemes extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        String selectGame = JOptionPane.showInputDialog(null, "New Game(1)\nLoad Game(2)");
+        String selectGame = JOptionPane.showInputDialog(null, "New Game: 1\nLoad Game: 2");
         screenSelection = Integer.parseInt(selectGame);
         while (screenSelection != 1 && screenSelection != 2) {
             selectGame = JOptionPane.showInputDialog(null, "Invalid selection. enter again");
@@ -177,7 +177,7 @@ public class Checkedmemes extends Application {
             WriteFile(cb, savename, FirstPlayerTurn);
         }
         if (RunGame == false) {
-            String selectSave = JOptionPane.showInputDialog(null, "Would you like to save? yes(1) no(0)");
+            String selectSave = JOptionPane.showInputDialog(null, "Would you like to save?\nyes: 1\nno: 0");
             saving = Integer.parseInt(selectSave);
             if (saving == 1) {
                 savename = JOptionPane.showInputDialog(null, "Enter the name of your save.");
@@ -840,6 +840,7 @@ public class Checkedmemes extends Application {
             if (y == 11) {
                 y = 0;
             }
+            
             if (y == 10) {
                 x = x + 1;
             }
