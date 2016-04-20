@@ -94,9 +94,7 @@ public class Checkedmemes extends Application {
     public static void main(String[] args) throws Exception {
         // Application.launch(args);
 
-        String savename = null;
-        File File  = new File("gamestate");
-        File File2 = new File(savename);
+        String savename = "null";
         int saving, screenSelection;
         boolean RunGame, FirstPlayerTurn, CheckingDoubleJump, GameOver, loading;
         GameOver = false;
@@ -158,13 +156,14 @@ public class Checkedmemes extends Application {
                 cb[0][0] = 48000000;
                 RunGame = false;
             }
+            WriteFile(cb, savename, FirstPlayerTurn);
         }
         if (RunGame == false) {
             String selectSave = JOptionPane.showInputDialog(null, "Would you like to save? yes(1) no(0)");
             saving = Integer.parseInt(selectSave);
             if (saving == 1) {
                 savename = JOptionPane.showInputDialog(null, "Enter the name of your save.");
-                WriteFile(cb, File, File2, FirstPlayerTurn);
+                WriteFile(cb, savename, FirstPlayerTurn);
             }
             JOptionPane.showMessageDialog(null, "Exiting Game");
             System.exit(0);
@@ -782,14 +781,17 @@ public class Checkedmemes extends Application {
             }
         }
     }
-
-    public static void WriteFile(int[][] cb, File File, File File2, boolean FirstPlayerTurn) throws Exception {
+    
+    public static void WriteFile(int[][] cb, String savename, boolean FirstPlayerTurn) throws Exception {
+        File File  = new File("gamestate");
+        File File2 = new File(savename);
         PrintStream Print;
         Print = new PrintStream(File);
         
         String boardValue;
 
         try {
+            
             for (int x = 1, y = 1; x < 8; y++) {
                 if (y == 9) {
                     y = 1;
@@ -803,15 +805,17 @@ public class Checkedmemes extends Application {
             }
 
             Print.print(FirstPlayerTurn);
-
-            Print.close();
+            
+            if(!savename.equals("null")){
+                File.renameTo(File2);
+                Print.close();
+            }
+           
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
         }
         
-        if(!File2.equals(null)){
-            File.renameTo(File2);
-        }
+        
     }
 
     public static int[][] ReadFile(String File) throws Exception {
