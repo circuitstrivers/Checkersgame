@@ -809,7 +809,6 @@ public class Checkedmemes extends Application {
         String boardValue;
 
         try {
-
             for (int x = 1, y = 1; x < 8; y++) {
                 if (y == 9) {
                     y = 1;
@@ -821,21 +820,17 @@ public class Checkedmemes extends Application {
                     x = x + 1;
                 }
             }
-
             Print.print(FirstPlayerTurn);
-
             if (!savename.equals("null")) {
                 File.renameTo(File2);
                 Print.close();
             }
-
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
         }
-
     }
 
-    public static int[][] ReadFile(String File) {
+    public static int[][] ReadFile(String File, String boardValue) throws Exception {
         int[][] cb;
         cb = new int[11][10];
         int i;
@@ -845,21 +840,19 @@ public class Checkedmemes extends Application {
             if (y == 11) {
                 y = 0;
             }
-
             if (y == 10) {
                 x = x + 1;
             }
         }
-
         try {
             fileReader = new Scanner(new File(File));
             fileReader.useDelimiter("\t|\n");
-
             while (fileReader.hasNext()) {
-
+                boardValue = fileReader.next();
                 i = i + 1;
             }
-        } catch (Exception NoSuchElementException) {
+        } 
+        catch (Exception NoSuchElementException) {
         }
         return cb;
     }
