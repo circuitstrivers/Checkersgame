@@ -57,8 +57,7 @@ public class Checkedmemes extends Application {
         }
     }
 
-    private void addPiecesToBoard(GridPane checkerBoard, Circle[] redPieces,
-            Circle[] blackPieces) {
+    private void addPiecesToBoard(GridPane checkerBoard, Circle[] redPieces, Circle[] blackPieces) {
         for (int i = 0; i < NUM_PIECES; i++) {
             redPieces[i] = new Circle(SQUARE_SIZE / 2 - 4, Color.RED);
             redPieces[i].setStroke(Color.BLACK);
@@ -95,7 +94,9 @@ public class Checkedmemes extends Application {
     public static void main(String[] args) throws Exception {
         // Application.launch(args);
 
-        String File = "gamestate";
+        String savename = null;
+        File File  = new File("gamestate");
+        File File2 = new File(savename);
         int saving, screenSelection;
         boolean RunGame, FirstPlayerTurn, CheckingDoubleJump, GameOver, loading;
         GameOver = false;
@@ -162,16 +163,15 @@ public class Checkedmemes extends Application {
             String selectSave = JOptionPane.showInputDialog(null, "Would you like to save? yes(1) no(0)");
             saving = Integer.parseInt(selectSave);
             if (saving == 1) {
-                File = JOptionPane.showInputDialog(null, "Enter the name of your save.");
-                WriteFile(cb, File, FirstPlayerTurn);
+                savename = JOptionPane.showInputDialog(null, "Enter the name of your save.");
+                WriteFile(cb, File, File2, FirstPlayerTurn);
             }
             JOptionPane.showMessageDialog(null, "Exiting Game");
             System.exit(0);
         }
     }
 
-    public static boolean CheckDoubleJump(int[][] cb, boolean FirstPlayerTurn,
-            int[][] JumpValue) {
+    public static boolean CheckDoubleJump(int[][] cb, boolean FirstPlayerTurn, int[][] JumpValue) {
         int playerValue;
         int playerRowChange;
         int[] JumpingPiece;
@@ -513,8 +513,7 @@ public class Checkedmemes extends Application {
         return cb;
     }
 
-    public static int[][] StartMovingPiece(int[][] cb, boolean FirstPlayerTurn,
-            int[][] JumpValue) {
+    public static int[][] StartMovingPiece(int[][] cb, boolean FirstPlayerTurn, int[][] JumpValue) {
         boolean IsValidMove, MovingPiece;
 
         if (FirstPlayerTurn) {
@@ -784,10 +783,10 @@ public class Checkedmemes extends Application {
         }
     }
 
-    public static void WriteFile(int[][] cb, String BoardFile, boolean FirstPlayerTurn) throws Exception {
+    public static void WriteFile(int[][] cb, File File, File File2, boolean FirstPlayerTurn) throws Exception {
         PrintStream Print;
-        Print = new PrintStream(BoardFile);
-
+        Print = new PrintStream(File);
+        
         String boardValue;
 
         try {
@@ -808,6 +807,10 @@ public class Checkedmemes extends Application {
             Print.close();
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
+        }
+        
+        if(!File2.equals(null)){
+            File.renameTo(File2);
         }
     }
 
