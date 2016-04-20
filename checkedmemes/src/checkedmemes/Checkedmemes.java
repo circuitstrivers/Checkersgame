@@ -20,54 +20,26 @@ import javafx.scene.shape.*;
 import java.io.*;
 import java.io.File;
 import java.io.PrintStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.JFrame;
 
 public class Checkedmemes extends Application {
 
     static Scanner fileReader;
     static int row, column, RowChange, ColumnChange;
 
+    EventHandler handler;
+    
     static Scanner stdin = new Scanner(System.in);
-    private static final int BOARD_SIZE = 8;
+    private static final int BOARD_SIZE  = 8;
     private static final int SQUARE_SIZE = 50;
-    private static final int NUM_PIECES = 12;
+    private static final int NUM_PIECES  = 12;
 
-    public static void main(String[] Args) throws Exception {
-        Application.launch(Args);
+    public static void main(String[] args) throws Exception{
+        Application.launch(args);
     }
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        while (true) {
-            Group board = new Group();
-            GridPane checkerBoard = new GridPane();
-            configureBoardLayout(checkerBoard);
-            addSquaresToBoard(checkerBoard);
-
-            board.getChildren().add(checkerBoard);
-
-            Circle[] redPieces = new Circle[NUM_PIECES];
-            Circle[] blackPieces = new Circle[NUM_PIECES];
-            //addPiecesToBoard(checkerBoard, redPieces, blackPieces);
-
-            BorderPane root = new BorderPane(board);
-            Scene scene = new Scene(root, 400, 400);
-            scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    System.out.println("Mouse x: " + event.getX() + " Mouse y: " + event.getY());
-                    row = (int)(event.getX() / 50 + 1);
-                    column = (int)(event.getY() / 50 + 1);
-                }
-            });
-            primaryStage.setScene(scene);
-            primaryStage.show();
-
-            run();
-        }
-    }
-
+    
     private void addSquaresToBoard(GridPane board) {
 
         Color[] squareColors = new Color[]{Color.RED, Color.BLACK};
@@ -113,13 +85,38 @@ public class Checkedmemes extends Application {
         }
     }
 
-    public void run() throws Exception {
+    @Override
+    public void start(Stage primaryStage) throws Exception {
         String savename = "null";
         int saving, screenSelection;
         boolean RunGame, FirstPlayerTurn, CheckingDoubleJump, GameOver, loading;
         GameOver = false;
         RunGame = true;
         FirstPlayerTurn = true;
+        
+        Group board = new Group();
+        GridPane checkerBoard = new GridPane();
+        configureBoardLayout(checkerBoard);
+        addSquaresToBoard(checkerBoard);
+
+        board.getChildren().add(checkerBoard);
+
+        Circle[] redPieces = new Circle[NUM_PIECES];
+        Circle[] blackPieces = new Circle[NUM_PIECES];
+        //addPiecesToBoard(checkerBoard, redPieces, blackPieces);
+
+        BorderPane root = new BorderPane(board);
+        Scene scene = new Scene(root, 400, 400);
+        scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                row = (int) (event.getX() / 50 + 1);
+                column = (int) (event.getY() / 50 + 1);
+                System.out.println("Mouse x: " + row + " Mouse y: " + column);
+            }
+        });
+        primaryStage.setScene(scene);
+        primaryStage.show();
 
         String selectGame = JOptionPane.showInputDialog(null, "New Game(1)\nLoad Game(2)");
         screenSelection = Integer.parseInt(selectGame);
@@ -145,6 +142,7 @@ public class Checkedmemes extends Application {
         int[][]cb = ReadFile(File);
         FirstPlayerTurn = (cb[11][10] == 1);
     }*/
+        
         int[][] JumpValue;
 
         while (RunGame) {
@@ -242,9 +240,9 @@ public class Checkedmemes extends Application {
                     DoubleJumpPresent = false;
                 }
                 if (DoubleJumpPresent) {
-                    JOptionPane.showMessageDialog(null, "The piece you moved (" + JumpingPiece[0]
-                            + "," + JumpingPiece[1] + ") has to make another jump");
-                    System.out.println("Select row and column to move piece to");
+//                    JOptionPane.showMessageDialog(null, "The piece you moved (" + JumpingPiece[0]
+//                           + "," + JumpingPiece[1] + ") has to make another jump");
+//                    System.out.println("Select row and column to move piece to");
                     RowChange = stdin.nextInt();
                     ColumnChange = stdin.nextInt();
                     IsValidMove = CheckMoveValid(cb, FirstPlayerTurn);
@@ -543,8 +541,8 @@ public class Checkedmemes extends Application {
         MovingPiece = true;
 
         while (MovingPiece) {
-            System.out.println("Select row and column of piece you want to move."
-                    + " row first then column. Or type 999 to exit");
+//            System.out.println("Select row and column of piece you want to move."
+//                    + " row first then column. Or type 999 to exit");
             row = stdin.nextInt();
 
             if (row == 999) {
@@ -559,7 +557,7 @@ public class Checkedmemes extends Application {
                             && (row != JumpValue[1][1] || column != JumpValue[1][2])
                             && (row != JumpValue[2][1] || column != JumpValue[2][2])
                             && (row != JumpValue[3][1] || column != JumpValue[3][2])) {
-                        System.out.println("There is a jump to be made at ");
+/*                        System.out.println("There is a jump to be made at ");
                         for (int i = 0; i < 4; i++) {
                             if (i > 0 && JumpValue[i][0] != 0) {
                                 System.out.println("OR AT");
@@ -571,12 +569,12 @@ public class Checkedmemes extends Application {
                         }
                         System.out.println("Select row and column of a piece that has"
                                 + "to make a jump");
-                        row = stdin.nextInt();
+*/                      row = stdin.nextInt();
                         column = stdin.nextInt();
                     }
                 }
-                System.out.println("Select row and column of space you want to move "
-                        + "piece to. row first then column.");
+//                System.out.println("Select row and column of space you want to move "
+//                      + "piece to. row first then column.");
                 RowChange = stdin.nextInt();
                 ColumnChange = stdin.nextInt();
                 IsValidMove = CheckMoveValid(cb, FirstPlayerTurn);
@@ -837,7 +835,7 @@ public class Checkedmemes extends Application {
 
     }
 
-    public static int[][] ReadFile(String File) throws Exception {
+    public static int[][] ReadFile(String File) {
         int[][] cb;
         cb = new int[11][10];
         int i;
