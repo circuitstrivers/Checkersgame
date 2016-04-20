@@ -9,6 +9,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -28,53 +29,66 @@ public class Checkedmemes extends Application {
     static int row, column, RowChange, ColumnChange;
 
     static Scanner stdin = new Scanner(System.in);
-    private static final int BOARD_SIZE = 8;
-    private static final int SQUARE_SIZE = 50;
-    private static final int NUM_PIECES = 12;
+    private static final int BOARD_SIZE = 8 ;
+    private static final int SQUARE_SIZE= 50 ;
+    private static final int NUM_PIECES = 12 ;
 
     @Override
     public void start(Stage primaryStage) {
+        Group board = new Group();
         GridPane checkerBoard = new GridPane();
+        Pane clicker = new Pane();
         configureBoardLayout(checkerBoard);
         addSquaresToBoard(checkerBoard);
 
+        board.getChildren().add(checkerBoard);
+        
         Circle[] redPieces = new Circle[NUM_PIECES];
         Circle[] blackPieces = new Circle[NUM_PIECES];
-        addPiecesToBoard(checkerBoard, redPieces, blackPieces);
-
-        BorderPane root = new BorderPane(checkerBoard);
-        primaryStage.setScene(new Scene(root, 400, 400));
+        //addPiecesToBoard(checkerBoard, redPieces, blackPieces);
+        
+        BorderPane root = new BorderPane(board);
+        Scene scene = new Scene(root, 400, 400);
+        scene.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent event){
+                System.out.println("Mouse x: " + event.getX() + " Mouse y: " + event.getY());
+            }
+        });
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 
     private void addSquaresToBoard(GridPane board) {
-        Color[] squareColors = new Color[]{Color.RED, Color.BLACK};
+        
+        Color[] squareColors = new Color[] {Color.RED, Color.BLACK};
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
-                board.add(new Rectangle(SQUARE_SIZE, SQUARE_SIZE,
-                        squareColors[(row + col) % 2]), col, row);
+                Rectangle rect = new Rectangle(SQUARE_SIZE, SQUARE_SIZE, squareColors[(row+col)%2]);
+                
+                board.add(rect, col,row);
+                rect.setMouseTransparent(true);
             }
         }
     }
-
-    private void addPiecesToBoard(GridPane checkerBoard, Circle[] redPieces, Circle[] blackPieces) {
-        for (int i = 0; i < NUM_PIECES; i++) {
-            redPieces[i] = new Circle(SQUARE_SIZE / 2 - 4, Color.RED);
+    
+    /*private void addPiecesToBoard(GridPane board, Circle[] redPieces,
+            Circle[] blackPieces) {
+        for (int i=0; i<NUM_PIECES; i++) {
+            redPieces[i] = new Circle(SQUARE_SIZE/2-4, Color.RED);
             redPieces[i].setStroke(Color.BLACK);
-            checkerBoard.add(redPieces[i], i % (BOARD_SIZE / 2) * 2
-                    + (2 * i / BOARD_SIZE) % 2,
-                    BOARD_SIZE - 1 - (i * 2) / BOARD_SIZE);
+            board.add(redPieces[i], i%(BOARD_SIZE/2) * 2 + (2*i/BOARD_SIZE)%2, BOARD_SIZE - 1 - (i*2)/BOARD_SIZE);
 
-            blackPieces[i] = new Circle(SQUARE_SIZE / 2 - 4, Color.BLACK);
+            Circle c = new Circle(SQUARE_SIZE/2 -4, Color.BLACK);
+            c.setMouseTransparent(true); //Mouse events not registered on the circle that overlays the rectangle. Event then gets handled at rectangle level
+            blackPieces[i] = c;
             blackPieces[i].setStroke(Color.RED);
-            checkerBoard.add(blackPieces[i], i % (BOARD_SIZE / 2) * 2
-                    + (1 + 2 * i / BOARD_SIZE) % 2,
-                    (i * 2) / BOARD_SIZE);
+            checkerBoard.add(blackPieces[i], i%(BOARD_SIZE/2) * 2 + (1 + 2*i/BOARD_SIZE)%2, (i*2)/BOARD_SIZE);
         }
-    }
+    }*/
 
     private void configureBoardLayout(GridPane board) {
-        for (int i = 0; i < BOARD_SIZE; i++) {
+        for (int i=0; i<BOARD_SIZE; i++) {
             RowConstraints rowConstraints = new RowConstraints();
             rowConstraints.setMinHeight(SQUARE_SIZE);
             rowConstraints.setPrefHeight(SQUARE_SIZE);
@@ -92,7 +106,7 @@ public class Checkedmemes extends Application {
     }
 
     public static void main(String[] args) throws Exception {
-        // Application.launch(args);
+        Application.launch(args);
 
         String savename = "null";
         int saving, screenSelection;
