@@ -96,7 +96,8 @@ public static void main(String[] args) throws Exception {
     JFrame frame = new JFrame();
     Application.launch(args);
     
-    String File = null;
+    String File = "gamestate";
+    String File2 = null;
     int saving, screenSelection;
     boolean RunGame, FirstPlayerTurn, CheckingDoubleJump, GameOver, loading;
     GameOver = false;
@@ -111,22 +112,22 @@ public static void main(String[] args) throws Exception {
     }
     
     loading = (screenSelection == 2);
-    if(loading == false){
+    //if(loading == false){
         int[][] cb = {{48000000, 49000000, 50000000, 51000000, 52000000, 53000000, 54000000, 55000000, 56000000, 48000000},
                       {49000000,  9000000,  9200001,  9000000,  9200001,  9000000,  9200001,  9000000,  9200001, 49000000},  //Row 1
-                      {50000000,  9000001,  9000000,  9000001,  9000000,  9000001,  9000000,  9000001,  9000000, 50000000},  //Row 2
-                      {51000000,  9000000,  9000001,  9000000,  9000011,  9000000,  9000001,  9000000,  9000001, 51000000},  //Row 3
+                      {50000000,  9000121,  9000000,  9000001,  9000000,  9000121,  9000000,  9000001,  9000000, 50000000},  //Row 2
+                      {51000000,  9000000,  9000001,  9000000,  9000011,  9000000,  9000011,  9000000,  9000001, 51000000},  //Row 3
                       {52000000,  9000001,  9000000,  9000001,  9000000,  9000001,  9000000,  9000001,  9000000, 52000000},  //Row 4
                       {53000000,  9000000,  9000001,  9000000,  9000011,  9000000,  9000001,  9000000,  9000001, 53000000},  //Row 5
-                      {54000000,  9000001,  9000000,  9000021,  9000000,  9000001,  9000000,  9000001,  9000000, 54000000},  //Row 6
-                      {55000000,  9000000,  9000001,  9000000,  9000001,  9000000,  9000001,  9000000,  9000001, 55000000},  //Row 7
+                      {54000000,  9000001,  9000000,  9000001,  9000000,  9000001,  9000000,  9000001,  9000000, 54000000},  //Row 6
+                      {55000000,  9000000,  9000021,  9000000,  9000001,  9000000,  9000001,  9000000,  9000001, 55000000},  //Row 7
                       {56000000,  9100001,  9000000,  9100001,  9000000,  9100001,  9000000,  9100001,  9000000, 56000000},  //Row 8
                       {48000000, 49000000, 50000000, 51000000, 52000000, 53000000, 54000000, 55000000, 56000000, 48000000}};
-    }else{
+    /*}else{
         File = JOptionPane.showInputDialog(null, "Enter name of file you want to load");
         int[][]cb = ReadFile(File);
         FirstPlayerTurn = (cb[11][10] == 1);
-    }
+    }*/
     int[][] JumpValue;
 
     while(RunGame){
@@ -135,6 +136,7 @@ public static void main(String[] args) throws Exception {
         CheckingDoubleJump = true;
         cb = StartMovingPiece(cb, FirstPlayerTurn, JumpValue);
         if(cb[0][0] != 999) PrintOut(cb);
+        if(cb[0][0] == 999) GameOver = true;
         while(CheckingDoubleJump && !GameOver){
             GameOver = CheckForEndGame(cb, FirstPlayerTurn);
             if(!GameOver){
@@ -158,7 +160,8 @@ public static void main(String[] args) throws Exception {
         String selectSave = JOptionPane.showInputDialog(null, "Would you like to save? yes(1) no(0)");
         saving = Integer.parseInt(selectSave);
         if(saving == 1){
-            File = JOptionPane.showInputDialog(null, "Enter the name of your save.");
+            File2 = JOptionPane.showInputDialog(null, "Enter the name of your save.");
+            
             WriteFile(cb, File, FirstPlayerTurn);
         }
         JOptionPane.showMessageDialog(null, "Exiting Game");
@@ -167,7 +170,7 @@ public static void main(String[] args) throws Exception {
 }
 
 public static boolean CheckDoubleJump(int[][] cb, boolean FirstPlayerTurn, 
-        int[][] JumpValue){
+    int[][] JumpValue){
     int playerValue;
     int playerRowChange;
     int[] JumpingPiece;
@@ -219,14 +222,16 @@ public static boolean CheckDoubleJump(int[][] cb, boolean FirstPlayerTurn,
                 DoubleJumpPresent = false;
             }
             if(DoubleJumpPresent){
-                JOptionPane.showMessageDialog(null, "The piece you moved, " + JumpingPiece[0] +
-                        " " + JumpingPiece[1] + " has to make another jump");
+                JOptionPane.showMessageDialog(null, "The piece you moved (" + JumpingPiece[0] +
+                        "," + JumpingPiece[1] + ") has to make another jump");
                 System.out.println("Select row and column to move piece to");
                 RowChange = stdin.nextInt();
                 ColumnChange = stdin.nextInt();
                 IsValidMove = CheckMoveValid(cb, FirstPlayerTurn);
                 while(IsValidMove == false){
                     JOptionPane.showMessageDialog(null, "Invalid Move try again", "Alert", JOptionPane.ERROR_MESSAGE);
+                    RowChange = stdin.nextInt();
+                    ColumnChange = stdin.nextInt();
                     IsValidMove = CheckMoveValid(cb, FirstPlayerTurn);
                 }
                 return true;
@@ -290,8 +295,13 @@ public static int[][] CheckPreJump(int[][] cb, boolean FirstPlayerTurn){
 }
 
 public static boolean CheckMoveValid(int[][] cb, boolean FirstPlayerTurn){
-    boolean MustJumpLeft, MustJumpRight;
-    int PieceColor, LeftSecondPieceColor, RightSecondPieceColor, RowDifference;
+    boolean MustJumpLeft, MustJumpRight, mustJumpBackLeft, mustJumpBackRight, isKing;
+    int PieceColor, LeftSecondPieceColor, RightSecondPieceColor, backRight, backLeft, RowDifference, jumpVal;
+    mustJumpBackLeft  = false;
+    mustJumpBackRight = false;
+    backRight = 0;
+    backLeft  = 0;
+    jumpVal   = 0;
     
     //first checks if requested piece is actually a piece
     if(cb[row][column] % 1000000 == 0){
@@ -305,14 +315,17 @@ public static boolean CheckMoveValid(int[][] cb, boolean FirstPlayerTurn){
         JOptionPane.showMessageDialog(null, "NOT YOUR PIECE", "Alert", JOptionPane.ERROR_MESSAGE);
         return false;
     }
+    //checks to see f piece is a king
+    isKing = (cb[row][column] % 1000 / 100 == 1);
+    
     //checks to make sure piece isnt moving backwards
     if(FirstPlayerTurn){
-        if(RowChange >= row){
+        if(RowChange >= row && isKing == false){
             JOptionPane.showMessageDialog(null, "Can't move backwards", "Alert", JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }else{
-        if(RowChange <= row){
+        if(RowChange <= row && isKing == false){
             JOptionPane.showMessageDialog(null, "Can't move backwards", "Alert", JOptionPane.ERROR_MESSAGE);
             return false;
         }
@@ -320,37 +333,50 @@ public static boolean CheckMoveValid(int[][] cb, boolean FirstPlayerTurn){
     
     //checks piece color and color of any piece that may be directly 
     //ahead of piece
-    PieceColor                = (((cb[row]    [column]     % 1000000) % 100000 % 100 - 1)
-            / 10);
+    PieceColor                = ((cb[row]    [column]     % 100 - 1) / 10);
     if(FirstPlayerTurn){
-        LeftSecondPieceColor  = (((cb[row - 1][column - 1] % 1000000) % 100000 % 100 - 1)
-            / 10);
-        RightSecondPieceColor = (((cb[row - 1][column + 1] % 1000000) % 100000 % 100 - 1)
-            / 10);
+        LeftSecondPieceColor  = ((cb[row - 1][column - 1] % 100 - 1) / 10);
+        RightSecondPieceColor = ((cb[row - 1][column + 1] % 100 - 1) / 10);
     }else{
-        LeftSecondPieceColor  = (((cb[row + 1][column - 1] % 1000000) % 100000 % 100 - 1)
-            / 10);
-        RightSecondPieceColor = (((cb[row + 1][column + 1] % 1000000) % 100000 % 100 - 1)
-            / 10);
-    }   
+        LeftSecondPieceColor  = ((cb[row + 1][column - 1] % 100 - 1) / 10);
+        RightSecondPieceColor = ((cb[row + 1][column + 1] % 100 - 1) / 10);
+    }
+    if(isKing){
+        if(FirstPlayerTurn){
+            backLeft  = ((cb[row + 1][column - 1] % 100 - 1) / 10);
+            backRight = ((cb[row + 1][column - 1] % 100 - 1) / 10);
+        }else{
+            backLeft  = ((cb[row - 1][column - 1] % 100 - 1) / 10);
+            backRight = ((cb[row - 1][column - 1] % 100 - 1) / 10);
+        }
+    }
+    
     //checks if there is a piece ahead that must be jumped
     MustJumpRight = (RightSecondPieceColor != PieceColor 
         && RightSecondPieceColor != 0);
     MustJumpLeft  = (LeftSecondPieceColor  != PieceColor 
         && LeftSecondPieceColor  != 0);
+    if(isKing){
+        mustJumpBackRight = (backRight != PieceColor && backRight != 0);
+        mustJumpBackLeft  = (backLeft  != PieceColor && backLeft  != 0);
+    }
+    if(    MustJumpRight) jumpVal = jumpVal + 1;
+    if(     MustJumpLeft) jumpVal = jumpVal + 1;
+    if(mustJumpBackRight) jumpVal = jumpVal + 1;
+    if( mustJumpBackLeft) jumpVal = jumpVal + 1;
     
     if(FirstPlayerTurn){
         RowDifference = -2;
     }else{
         RowDifference =  2;
     }
-    if((MustJumpRight == false) && (MustJumpLeft == false)){
+    if(!MustJumpRight && !MustJumpLeft && !mustJumpBackRight && !mustJumpBackLeft){
         if(ColumnChange == column || Math.abs(ColumnChange - column) > 1){
             JOptionPane.showMessageDialog(null, "Can't move there", "Alert", JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }else{
-        if(MustJumpRight && !MustJumpLeft){
+        if(MustJumpRight && !MustJumpLeft && !mustJumpBackRight && !mustJumpBackLeft){
             if(!(RowChange == row + RowDifference && 
                     ColumnChange == column + 2)){
                 if(cb[row + RowDifference][column + 2] % 1000000 == 1){
@@ -358,7 +384,7 @@ public static boolean CheckMoveValid(int[][] cb, boolean FirstPlayerTurn){
                     return false;
                 }
             }
-        }else if(MustJumpLeft && !MustJumpRight){
+        }else if(MustJumpLeft && !MustJumpRight && !mustJumpBackRight && !mustJumpBackLeft){
             if(!(RowChange == row + RowDifference && 
                     ColumnChange == column - 2)){
                 if(cb[row + RowDifference][column - 2] % 1000000 == 1){
@@ -366,11 +392,31 @@ public static boolean CheckMoveValid(int[][] cb, boolean FirstPlayerTurn){
                     return false;
                 }
             }
-        }else if(MustJumpRight && MustJumpLeft){
+        }else if(mustJumpBackRight && !mustJumpBackLeft && !MustJumpLeft && !MustJumpRight){
+            if(!(RowChange == row - RowDifference && 
+               ColumnChange == column + 2)){
+                if(cb[row - RowDifference][column + 2] % 1000000 == 1){
+                    JOptionPane.showMessageDialog(null, "Must jump back right", "Alert", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+            }              
+        }else if(mustJumpBackLeft && !mustJumpBackRight && !MustJumpLeft && !MustJumpRight){
+            if(!(RowChange == row - RowDifference && 
+               ColumnChange == column - 2)){
+                if(cb[row - RowDifference][column - 2] % 1000000 == 1){
+                    JOptionPane.showMessageDialog(null, "Must jump back left", "Alert", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+            }
+        }else if(jumpVal > 1){
             if(!(((RowChange    == row + RowDifference && ColumnChange == column + 2)
                 && cb[row + RowDifference][column + 2] % 1000000 == 1) || 
-                  (RowChange    == row + RowDifference && ColumnChange == column - 2) &&
-                   cb[row + RowDifference][column - 2] % 1000000 == 1)){
+                 ((RowChange    == row + RowDifference && ColumnChange == column - 2) &&
+                   cb[row + RowDifference][column - 2] % 1000000 == 1) ||
+                 ((RowChange    == row - RowDifference && ColumnChange == column + 2) &&
+                   cb[row - RowDifference][column + 2] % 1000000 == 1) ||
+                 ((RowChange    == row - RowDifference && ColumnChange == column - 2) &&
+                   cb[row - RowDifference][column - 2] % 1000000 == 1))){
                 JOptionPane.showMessageDialog(null, "Must make jump", "Alert", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
@@ -384,6 +430,7 @@ public static boolean CheckMoveValid(int[][] cb, boolean FirstPlayerTurn){
     //move is valid
     return true;
 }
+
 
 public static int[][] MovePiece(int[][] cb, boolean FirstPlayerTurn){
     if(cb[RowChange][ColumnChange] % 1000000 / 100000 == 2){
@@ -511,10 +558,9 @@ public static boolean CheckForEndGame(int[][]cb, boolean FirstPlayerTurn){
         JOptionPane.showMessageDialog(null, "Black Wins");
         return true;
     }
-    
     //checks how many pieces of each color are left
     for(int x = 1, y = 1; x < 8; y++){
-        if(y ==9){
+        if(y == 9){
             y = 1;
         }
             if(cb[x][y] % 100 / 10 == 1){
@@ -526,7 +572,6 @@ public static boolean CheckForEndGame(int[][]cb, boolean FirstPlayerTurn){
             x = x + 1;
         }
     }
-    
     //check if any pieces can still move
     for(int x = 1, y = 1; x < 8; y++){
         if(y == 9){
@@ -552,23 +597,35 @@ public static boolean CheckForEndGame(int[][]cb, boolean FirstPlayerTurn){
                             }
                         }
                     }else{
-                        return !((cb[x - 1][y - 1] % 100 == 1 ||
-                                  cb[x - 1][y + 1] % 100 == 1)||
-                                 (cb[x - 2][y - 2] % 100 == 1 ||
-                                  cb[x - 2][y + 2] % 100 == 1));
+                        if(cb[x - 1][y - 1] % 100 == 1 ||
+                           cb[x - 1][y + 1] % 100 == 1){
+                            return false;
+                        }
+                        if(x > 2){
+                            if(y > 2){
+                                if(cb[x - 2][y - 2] % 100 == 1){
+                                    return false;
+                                }
+                                if(y < 8){
+                                    if(cb[x - 2][y + 2] % 100 == 1){
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }else{
                 if(cb[x][y] % 100 / 10 == 1){
                     if(cb[x][y] % 1000 / 100 == 1){
-                        if((cb[x - 1][y - 1] % 100 == 1 ||
-                            cb[x - 1][y + 1] % 100 == 1)||
-                           (cb[x + 1][y - 1] % 100 == 1 ||
-                            cb[x + 1][y + 1] % 100 == 1)||
-                           (cb[x - 2][y - 2] % 100 == 1 ||
-                            cb[x - 2][y + 2] % 100 == 1)||
-                           (cb[x + 2][y - 2] % 100 == 1 ||
-                            cb[x + 2][y + 2] % 100 == 1)){
+                        if((cb[x - 1][y - 1] % 100 == 2 ||
+                            cb[x - 1][y + 1] % 100 == 2)||
+                           (cb[x + 1][y - 1] % 100 == 2 ||
+                            cb[x + 1][y + 1] % 100 == 2)||
+                           (cb[x - 2][y - 2] % 100 == 2 ||
+                            cb[x - 2][y + 2] % 100 == 2)||
+                           (cb[x + 2][y - 2] % 100 == 2 ||
+                            cb[x + 2][y + 2] % 100 == 2)){
                             if(RedAmntLeft > BlackAmntLeft){
                                 JOptionPane.showMessageDialog(null, "Stalemate. Red has more pieces");
                                 return true;
@@ -578,18 +635,30 @@ public static boolean CheckForEndGame(int[][]cb, boolean FirstPlayerTurn){
                             }
                         }
                     }else{
-                        return !((cb[x + 1][y - 1] % 100 == 1 ||
-                                  cb[x + 1][y + 1] % 100 == 1)||
-                                 (cb[x + 2][y - 2] % 100 == 1 ||
-                                  cb[x + 2][y + 2] % 100 == 1));
+                        if(cb[x + 1][y - 1] % 100 == 2 ||
+                           cb[x + 1][y + 1] % 100 == 2){
+                            return false;
+                        }
+                        if(x < 8){
+                            if(y > 2){
+                                if(cb[x + 2][y - 2] % 100 == 2){
+                                    return false;
+                                }
+                                if(y < 8){
+                                    if(cb[x + 2][y + 2] % 100 == 2){
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
+                if(y == 8){
+                    x = x + 1;
+                }
             }
-        if(y == 8){
-            x = x + 1;
-        }
-    }
-    
+            return false;
+        }    
     return false;
 }
 
@@ -708,7 +777,7 @@ public static int[][] ReadFile(String File) throws Exception {
     }
     
     try {
-        fileReader = new Scanner(new File(BoardFile));
+        fileReader = new Scanner(new File(File));
         fileReader.useDelimiter("\t|\n");
         
         while (fileReader.hasNext()) {
